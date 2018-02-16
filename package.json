@@ -1,0 +1,47 @@
+{
+  "name": "espacex",
+  "version": "1.0.0",
+  "description": "2D space scroller shooter game",
+  "main": "index.js",
+  "dependencies": {
+    "html-to-react": "^1.3.3",
+    "jquery": "^3.3.1",
+    "prop-types": "^15.6.0",
+    "react": "^16.2.0",
+    "react-addons-css-transition-group": "^15.6.2",
+    "react-dom": "^16.2.0",
+    "react-redux": "^5.0.6",
+    "react-router-dom": "^4.2.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "cross-env": "^5.1.3",
+    "git-revision-webpack-plugin": "^2.5.1",
+    "nodemon": "^1.14.11",
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.11.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fpvonly/e.spacex.git"
+  },
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development webpack-dev-server",
+    "devbuild": "cross-env NODE_ENV=development webpack",
+    "prodbuild": "cross-env NODE_ENV=production webpack"
+  },
+  "author": "Ari Petäjäjärvi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fpvonly/e.spacex/issues"
+  },
+  "homepage": "https://github.com/fpvonly/e.spacex#readme"
+}
