@@ -1,3 +1,7 @@
+@font-face {
+  font-family: Audiowide-Regular;
+  src: url(Audiowide-Regular.ttf);
+}
 
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -45,4 +49,61 @@ q:before, q:after {
 table {
   border-collapse: collapse;
   border-spacing: 0;
+}
+
+
+/* App styles -> */
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: #000000;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+header {
+  position: absolute;
+  z-index: 99;
+}
+
+img {
+  max-width: 100%;
+  position: absolute;
+}
+
+canvas {
+  position: absolute;
+}
+
+.bg {
+  background: url('../images/space1.jpg');
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-size: cover;
+}
+
+.title {
+  font-family: 'Audiowide-Regular', 'Arial';
+  color: #fff;
+  font-size: 15vw;
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 30%;
+  text-shadow: 0.3rem 0.3rem 5rem #fff;
+  animation-name: title_anim;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes title_anim {
+  0% { text-shadow: 0.3rem 0.3rem 5rem rgba(255,255,255,1); }
+  50% { text-shadow: 0.3rem 0.3rem 5rem rgba(255,255,255,0.2); }
+  100% { text-shadow: 0.3rem 0.3rem 5rem rgba(255,255,255,1); }
 }

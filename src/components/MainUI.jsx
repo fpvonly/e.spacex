@@ -20,8 +20,11 @@ class App extends React.Component {
   };
 
   componentWillMount() {
-    window.addEventListener('resize', resizeCanvas, false);
+    window.addEventListener('resize', this.resizeCanvas, false);
+  }
 
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.resizeCanvas, false);
   }
 
   resizeCanvas = (e) => {
@@ -33,9 +36,13 @@ class App extends React.Component {
   render() {
     return <div>
       <header>HEADER</header>
-      <canvas ref={(c) => {this.canvas = c;}}>
+      <div className='bg' />
+      <canvas ref={(c) => {this.canvas = c;}} width={window.innerWidth} height={window.innerHeight}>
         Your browser doesn't support HTML5 canvas API. Please update your browser.
       </canvas>
+      <div className='title'>e.spaceX</div>
     </div>
   }
 }
+
+export default App;
