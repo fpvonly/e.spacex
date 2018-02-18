@@ -62,22 +62,18 @@ class Game extends React.Component {
     window.removeEventListener("resize", this.resizeCanvas, false);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.gameState === RUN && this.props.gameState === STOP) {
-      // set empty state and start the game as callback function to get the updated dom (componentDidUpdate not working for this)
-      this.setState({}, () => {
-        this.startGame();
-      });
-    } else {
-      this.setState({}, () => {
-        this.resetGame();
-      });
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextProps.gameState === RUN && this.props.gameState === RUN) {
+      return false;
     }
+    return true;
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if (nextProps.gameState === RUN && this.props.gameState === STOP) {
-      return false;
+  componentDidUpdate(prevProps, prevState) {
+    if(this.props.gameState === RUN && prevProps.gameState === STOP) {
+      this.startGame();
+    } else if (this.props.gameState === STOP && prevProps.gameState === RUN) { // TODO Test this
+      this.resetGame();
     }
   }
 
@@ -85,12 +81,13 @@ class Game extends React.Component {
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
 
-    if (window.innerHeight < 800) {
-      this.scrollSpeed = 1;
-    } else {
-      this.scrollSpeed = 2;
-    }
+    this.resetGame();
     this.props.setGameState(STOP);
+  }
+
+  getCanvasRef = (c) => {
+    this.canvas = c;
+    this.context = c.getContext("2d");
   }
 
   startGame = () => {
@@ -100,6 +97,13 @@ class Game extends React.Component {
 
   resetGame = () => {
     cancelAnimRequestFrame(this.animation);
+    this.scrollY = 0;
+    this.scrollX = 0;
+    if (window.innerHeight < 800) {
+      this.scrollSpeed = 1;
+    } else {
+      this.scrollSpeed = 2;
+    }
   }
 
   animate = () => {
@@ -108,8 +112,10 @@ class Game extends React.Component {
   }
 
   draw = () => {
-    this.clearCanvas();
-    this.drawBgScroll();
+    if (this.context && this.context.clearRect) {
+      this.clearCanvas();
+      this.drawBgScroll();
+    }
   }
 
   drawBgScroll = () =>{
@@ -123,17 +129,14 @@ class Game extends React.Component {
     }
   }
 
-
-
    clearCanvas = () => {
-    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-  }
+     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+   }
 
   render() {
-    console.log('render');
     return <div>
       <div className='bg' />
-      <canvas ref={(c) => {this.canvas = c; this.context = c.getContext("2d");}} width={window.innerWidth} height={window.innerHeight}>
+      <canvas ref={this.getCanvasRef} width={window.innerWidth} height={window.innerHeight}>
         Your browser doesn't support HTML5 canvas API. Please update your browser.
       </canvas>
     </div>
