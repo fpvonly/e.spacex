@@ -107,3 +107,110 @@ canvas {
   50% { text-shadow: 0.3rem 0.3rem 5rem rgba(255,255,255,0.2); }
   100% { text-shadow: 0.3rem 0.3rem 5rem rgba(255,255,255,1); }
 }
+
+.arc {
+  width: 810px;
+  height: 420px;
+  background: transparent;
+  position: absolute;
+  transform: rotate(30deg);
+  left: 37%;
+  top: 11%;
+  border-right: 100px solid #ffff;
+  border-bottom: 100px solid #ffff;
+  border-radius: 54%;
+  z-index: 1;
+  opacity: 0.3;
+  animation-name: arc_anim;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes arc_anim {
+  0% { box-shadow: 0.3rem 0.3rem 5rem rgba(255,255,255,1); }
+  50% { box-shadow: 0.3rem 0.3rem 5rem rgba(255,255,255,0.2); }
+  100% { box-shadow: 0.3rem 0.3rem 5rem rgba(255,255,255,1); }
+}
+
+.menu {
+  background: rgba(255,255,255,1);
+  position: fixed;
+  z-index: 9999;
+  transform: rotate(-40deg);
+  left: -15vw;
+  top: 0;
+  width: 70%;
+  height: 6vw;
+  animation-name: menu_anim;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes menu_anim {
+  0% { box-shadow: 0.3rem 0.3rem 5rem rgba(255,255,255,1); }
+  50% { box-shadow: 0.3rem 0.3rem 5rem rgba(255,255,255,0.2); }
+  100% { box-shadow: 0.3rem 0.3rem 5rem rgba(255,255,255,1); }
+}
+
+.menu .menu_btn {
+  background: transparent;
+  position: absolute;
+  width: 6vw;
+  height: 6vw;
+  transform: rotate(40deg);
+  cursor: pointer;
+  font-family: 'Audiowide-Regular', 'Arial';
+  text-align: center;
+  line-height: 5.5vw;
+  font-size: 3vw;
+}
+
+.menu .menu_btn .circle {
+  width: 5vw;
+  height: 5vw;
+  background: #2b0167;
+  border: 2px solid #2b0167;
+  color: #fff;
+  overflow: hidden;
+  border-radius: 50%;
+  transition: box-shadow,width 0.2s ease-in;
+  box-shadow: 0.3rem 0.3rem 0.5rem rgba(0,0,0,1);
+}
+
+.menu .menu_btn .circle:hover {
+  background: #fff;
+  color: #2b0167;
+  border-left: 0;
+  border-top: 0;
+  box-shadow: 0rem 0rem 2rem #000;
+  width: 30vw;
+  border-radius: 50px 0;
+  animation-name: menu_btn_anim;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes menu_btn_anim {
+  0% { box-shadow: 0.3rem 0.3rem 5rem rgba(255,255,255,1); }
+  50% { box-shadow: 0.3rem 0.3rem 5rem rgba(255,255,255,0.2); }
+  100% { box-shadow: 0.3rem 0.3rem 5rem rgba(255,255,255,1); }
+}
+
+.menu .menu_btn .circle span {
+  padding-left: 1vw;
+}
+
+.menu .menu_btn.new_game {
+  top: 0.4vw;
+  left: 29vw;
+}
+
+.menu .menu_btn.info {
+  top: 0.4vw;
+  left: 20.5vw;
+}
+
+.menu .menu_btn.quit {
+  top: 0.4vw;
+  left: 11.5vw;
+}
