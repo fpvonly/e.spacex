@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 
 import conf from '../conf.json';
 
+const STOP = 'STOP';
+const RUN = 'RUN';
+
 class Menu extends React.Component {
 
   constructor(props) {
@@ -21,7 +24,7 @@ class Menu extends React.Component {
   };
 
   handleNewGameClick = () => {
-    this.props.setGameState('RUN');
+    this.props.setGameState(RUN);
   }
 
   handleShowInfoClick = () => {
@@ -34,7 +37,7 @@ class Menu extends React.Component {
 
   render() {
     let menu = null;
-    if (this.props.gameState === 'STOP') {
+    if (this.props.gameState === STOP) {
       menu = <div className='menu'>
         <div className='menu_btn new_game' onClick={this.handleNewGameClick}><div className='circle'><span>New game</span></div></div>
         <div className='menu_btn info'><div className='circle' onClick={this.handleShowInfoClick}><span>Info</span></div></div>

@@ -2,6 +2,8 @@ import React from 'react';
 import {render} from 'react-dom';
 import PropTypes from 'prop-types';
 
+import Ship from './Ship';
+
 const STOP = 'STOP';
 const RUN = 'RUN';
 
@@ -24,6 +26,7 @@ class Game extends React.Component {
     }
     this.scrollY = 0;
     this.scrollX = 0;
+    this.ship = null;
   }
 
   static defaultProps = {
@@ -92,6 +95,7 @@ class Game extends React.Component {
 
   startGame = () => {
     this.context = this.canvas.getContext('2d');
+    this.ship = new Ship(this.context, this.canvas);
     this.animate();
   }
 
@@ -115,15 +119,14 @@ class Game extends React.Component {
     if (this.context && this.context.clearRect) {
       this.clearCanvas();
       this.drawBgScroll();
+      this.ship.draw();
     }
   }
 
   drawBgScroll = () =>{
 		this.scrollY += this.scrollSpeed;
-
 		this.context.drawImage(this.scrollBackground, this.scrollX, this.scrollY, 1920, 1080);
 		this.context.drawImage(this.scrollBackground, this.scrollX, this.scrollY - this.canvas.height, 1920, 1080);
-
 		if (this.scrollY >= this.canvas.height) {
       this.scrollY = 0;
     }

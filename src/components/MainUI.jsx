@@ -8,7 +8,7 @@ import TitleBanner from './TitleBanner.jsx';
 const STOP = 'STOP';
 const RUN = 'RUN';
 
-class App extends React.Component {
+class UI extends React.Component {
 
   constructor(props) {
     super(props);
@@ -31,4 +31,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default UI;

@@ -2,6 +2,9 @@ import React from 'react';
 import {render} from 'react-dom';
 import PropTypes from 'prop-types';
 
+const STOP = 'STOP';
+const RUN = 'RUN';
+
 class TitleBanner extends React.Component {
 
   constructor(props) {
@@ -18,13 +21,13 @@ class TitleBanner extends React.Component {
 
   render() {
     let banner = null;
-    if (this.props.gameState === 'STOP') {
+    if (this.props.gameState === STOP) {
       banner = <div className='banner'>
         <div className='title'>e.spaceX</div>
         <div className='arc'></div>
       </div>;
     }
-    
+
     return banner;
   }
 }
