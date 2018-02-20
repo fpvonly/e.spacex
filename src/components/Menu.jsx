@@ -27,7 +27,7 @@ class Menu extends React.Component {
     this.props.setGameState(RUN);
   }
 
-  handleShowInfoClick = () => {
+  handleShowExtraClick = () => {
 
   }
 
@@ -40,7 +40,7 @@ class Menu extends React.Component {
     if (this.props.gameState === STOP) {
       menu = <div className='menu'>
         <div className='menu_btn new_game' onClick={this.handleNewGameClick}><div className='circle'><span>New game</span></div></div>
-        <div className='menu_btn info'><div className='circle' onClick={this.handleShowInfoClick}><span>Info</span></div></div>
+        <div className='menu_btn extra'><div className='circle' onClick={this.handleShowExtraClick}><span>Extra</span></div></div>
         <div className='menu_btn quit' onClick={this.handleQuitClick}><div className='circle'><span>Quit</span></div></div>
       </div>;
     }

@@ -2,7 +2,12 @@ import GameObject from './GameObject';
 import Bullet from './Bullet';
 
 const KEYS = {
-  32: 'SHOOT', // Space
+  'Control': 'SHOOT',
+  'ArrowLeft': 'LEFT',
+  'ArrowUp': 'UP',
+  'ArrowRight': 'RIGHT',
+  'ArrowDown': 'DOWN',
+  17: 'SHOOT', // ctrl
   37: 'LEFT',
   38: 'UP',
   39: 'RIGHT',
@@ -45,8 +50,8 @@ class Ship extends GameObject {
 
     if (!("ontouchstart" in document.documentElement)) {
       this.mouseTimer = null;
-      window.addEventListener('keydown', this.addActiveDownKeys, false);
-      window.addEventListener('keyup', this.removeActiveDownKeys, false);
+      window.addEventListener('keydown', this.addActiveDownKeys, true);
+      window.addEventListener('keyup', this.removeActiveDownKeys, true);
       window.addEventListener('mousemove', this.handleMouseMove, false);
       window.addEventListener('mousedown', this.handleMouseDown, false);
       window.addEventListener('mouseup', this.handleMouseUp, false);
@@ -107,12 +112,12 @@ class Ship extends GameObject {
 
   addActiveDownKeys = (e) => {
     e.preventDefault();
-      this.steerProxy[KEYS[e.keyCode]] = true;
+    this.steerProxy[KEYS[e.key || e.keyCode]] = true;
   }
 
   removeActiveDownKeys = (e) => {
     e.preventDefault();
-    Reflect.deleteProperty(this.steerProxy, KEYS[e.keyCode]);
+    Reflect.deleteProperty(this.steerProxy, KEYS[e.key || e.keyCode]);
   }
 
   handleMouseMove = (e) => {
