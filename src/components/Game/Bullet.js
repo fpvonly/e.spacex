@@ -9,6 +9,7 @@ class Bullet extends GameObject {
     this.bulletBg.src = "assets/images/bullet_2.png";
 
     this.gunBlast = new Audio("assets/sounds/aaj_0022_Lazer_Gun_02_SFX.mp3");
+    this.gunBlast.volume = 0.2;
 
     this.active = true;
   }
