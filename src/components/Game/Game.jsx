@@ -117,9 +117,14 @@ class Game extends React.Component {
 
   draw = () => {
     if (this.context && this.context.clearRect) {
+      let bullets = this.ship.getBullets();
       this.clearCanvas();
       this.drawBgScroll();
-      this.ship.draw();
+      let done = false;
+      for (let bullet of bullets) {
+        done = bullet.draw();
+      }
+      done = this.ship.draw();
     }
   }
 
@@ -139,7 +144,7 @@ class Game extends React.Component {
   render() {
     return <div>
       <div className='bg' />
-      <canvas ref={this.getCanvasRef} width={window.innerWidth} height={window.innerHeight}>
+      <canvas ref={this.getCanvasRef} width={window.innerWidth} height={window.innerHeight} style={(this.props.gameState === RUN ? {'cursor': 'none'} : null)}>
         Your browser doesn't support HTML5 canvas API. Please update your browser.
       </canvas>
     </div>
