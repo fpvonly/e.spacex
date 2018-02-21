@@ -2,37 +2,50 @@ import GameObject from './GameObject';
 import Bullet from './Bullet';
 import Explosion from './Explosion';
 
+const ASTEROID = 'asteroid';
+const BLUE_UFO = 'blueUFO';
+const ROTATING_UFO = 'rotatingUFO';
+
 class Enemy extends GameObject {
 
-  constructor(context, canvas, type = 'rotatingUFO') {
+  constructor(context, canvas, type = ROTATING_UFO) {
 
     let ratio = 0;
     let width =  0;
     let height = 0;
 
-    if (type === 'rotatingUFO') {
-      width = (canvas.height/10 < 512 ? canvas.height/10 : 512);
-      height = width;
-    } else {
-      width = (canvas.height/10 < 198 ? canvas.height/10 : 198);
-      height = width;
+    if (type === ROTATING_UFO) {
+      height = (canvas.height/10 < 512 ? canvas.height/10 : 512);
+      width = height;
+    } else if (type === BLUE_UFO) {
+      height = (canvas.height/10 < 198 ? canvas.height/10 : 198);
+      width = height;
+    } else if (type === 'asteroid') {
+      ratio = 320/240; // width/height
+      height = (canvas.height/10 < 240 ? canvas.height/10 : 240);
+      width = height * ratio;
     }
 
-    let randomX = Math.floor(Math.random() * (canvas.width - canvas.height/10 + 1)) + 0;
-    let randomY = Math.floor(Math.random() * (canvas.height - canvas.height/10 + 1)) + 0;
+    let randomX = Math.floor(Math.random() * (canvas.width - width));
+    let randomY = Math.floor(Math.random() * (canvas.height - height));
     randomY = -Math.abs(randomY)
 
     // context, canvas, width, height, x, y, speed
-    super(context, canvas, width, height, randomX, randomY, 5);
+    super(context, canvas, width, height, randomX, randomY, (type === ASTEROID ? 8 : 5), (type === ASTEROID ? 0.1 : 0.05));
 
-    this.rotating = false;
-    if (type === 'rotatingUFO') {
-      this.enemyBg = new Image();
-      this.rotating = true;
+    this.type = type;
+    this.shooting = true;
+    this.enemyBg = new Image();
+    if (this.type === ROTATING_UFO) {
       this.enemyBg.src = "assets/images/enemy.png";
-    } else {
-      this.enemyBg = new Image();
+      this.rotating = true;
+    } else if (this.type === BLUE_UFO) {
       this.enemyBg.src = "assets/images/enemy_2.png";
+      this.rotating = false;
+    } else if (this.type === ASTEROID) {
+      this.enemyBg.src = "assets/images/a10003.png";
+      this.rotating = true;
+      this.shooting = false;
     }
 
     this.bullets = [];
@@ -54,13 +67,17 @@ class Enemy extends GameObject {
     if (this.active === true) {
       if (this.y < this.canvas.height + this.height/2) {
         this.moveDown(this.speed);
+        if (this.type === ASTEROID) {
+          this.moveLeft(this.speed/2);
+        }
       } else {
         this.active = false;
       }
 
       if (this.rotating === true) {
         this.context.setTransform(1, 0, 0, 1, this.x, this.y);
-        this.context.rotate(this.rotateToRight(0.05));
+        this.context.setTransform(1, 0, 0, 1, this.x + (this.width/2), this.y + (this.height/2)); // needed to keep coords valid for collision detection
+        this.context.rotate(this.rotateToRight());
         this.context.drawImage(this.enemyBg, -(this.width/2), -(this.height/2), this.width, this.height);
         this.context.setTransform(1, 0, 0, 1, 0, 0); // reset
       } else {
@@ -73,7 +90,7 @@ class Enemy extends GameObject {
         this.explosion.draw();
         this.explosion.playSound();
       }
-      if (this.destroyed === true && this.explosion.isExplosionAnimationComplete() === true) {
+      if (this.active === false || (this.destroyed === true && this.explosion.isExplosionAnimationComplete() === true)) {
         this.reSpawn();
       }
 
@@ -99,9 +116,10 @@ class Enemy extends GameObject {
   }
 
   reSpawn = () => {
-    this.resetY();
-    let randomX = Math.floor(Math.random() * (this.canvas.width - this.width + 1)) + 0;
+    let randomX = Math.floor(Math.random() * (this.canvas.width - this.width));
+    let randomY = Math.floor(Math.random() * (this.canvas.height - this.height));
     this.moveToX(randomX);
+    this.moveToY(-Math.abs(randomY));
     this.active = true
     this.destroyed = false;
     this.explosion.resetFrames();

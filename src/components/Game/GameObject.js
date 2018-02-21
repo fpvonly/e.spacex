@@ -1,6 +1,6 @@
 class GameObject {
 
-  constructor(context = null, canvas = null, width = 0, height = 0, x = null, y = null, speed = 1) {
+  constructor(context = null, canvas = null, width = 0, height = 0, x = null, y = null, speed = 1, rotateSpeed = 0.05) {
     this.context = context;
     this.canvas = canvas;
 
@@ -12,6 +12,7 @@ class GameObject {
     this.height = height;
     this.speed = speed;
     this.rotateDegress = 0;
+    this.rotateSpeed = rotateSpeed;
 
     if ("ontouchstart" in document.documentElement) {
       this.width *= 2;
@@ -45,7 +46,7 @@ class GameObject {
     this.y = y;
   }
 
-  reset = () => {
+  resetXY = () => {
     this.x = this.xOriginal;
     this.y = this.yOriginal;
   }
@@ -58,12 +59,44 @@ class GameObject {
     this.y = this.yOriginal;
   }
 
-  rotateToRight = (degrees) => {
+  rotateToRight = (degrees = this.rotateSpeed) => {
     if (this.rotateDegress >= 360) {
       this.rotateDegress = 0;
     }
     this.rotateDegress += degrees;
     return this.rotateDegress;
+  }
+
+  didCollideWith = (target, source) => {
+    let hit = false;
+    let tolerance = 0.8;
+    if (typeof source === 'undefined') {
+      source = this;
+    }
+    // check if source collides and fits inside target object
+    if (source.x * tolerance > target.x * tolerance &&
+      source.x * tolerance < target.x * tolerance + target.width * tolerance &&
+      source.y * tolerance > target.y * tolerance &&
+      source.y * tolerance < target.y * tolerance + target.height * tolerance) {
+        hit = true;
+    }
+
+    // detect if source's RIGHT side overlaps with target object
+    if (source.x * tolerance + source.width * tolerance > target.x * tolerance &&
+      source.x * tolerance + source.width * tolerance < target.x * tolerance  + target.width * tolerance &&
+      source.y * tolerance < target.y * tolerance  + target.height * tolerance &&
+      source.y * tolerance + source.height * tolerance > target.y * tolerance) {
+        hit = true;
+    }
+
+    // detect if source's LEFT side overlaps with target object
+    if (source.x * tolerance < target.x * tolerance + target.width * tolerance &&
+      source.x * tolerance + source.width * tolerance > target.x * tolerance + target.width * tolerance &&
+      source.y * tolerance < target.y * tolerance  + target.height * tolerance &&
+      source.y * tolerance + source.height * tolerance > target.y * tolerance) {
+      hit = true;
+    }
+    return hit;
   }
 
 }

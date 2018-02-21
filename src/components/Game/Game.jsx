@@ -7,7 +7,7 @@ import Enemy from './Enemy';
 
 const STOP = 'STOP';
 const RUN = 'RUN';
-const NUMBER_OF_ENEMIES = 10;
+const NUMBER_OF_ENEMIES = 11;
 
 class Game extends React.Component {
 
@@ -68,6 +68,7 @@ class Game extends React.Component {
     })();
     window.addEventListener('resize', this.resizeCanvas, false);
     window.addEventListener('keyup', this.stopGame, false);
+    document.addEventListener("visibilitychange", this.handleDocumentVisibilityChange, false); // reset game if user changes tab
   }
 
   componentWillUnmount() {
@@ -90,6 +91,13 @@ class Game extends React.Component {
   getCanvasRef = (c) => {
     this.canvas = c;
     this.context = c.getContext("2d");
+  }
+
+  handleDocumentVisibilityChange = () => {
+    if (document.hidden === true) {
+      this.resetGame();
+      this.props.setGameState(STOP);
+    }
   }
 
   resizeCanvas = (e) => {
@@ -130,9 +138,17 @@ class Game extends React.Component {
     // let's pre-create the re-spawning enemies so that the drawing loop is lighter on performance (because of images)
     for (let i = 0; i < NUMBER_OF_ENEMIES; i++) {
       let type = (i%3 === 0) ? 'rotatingUFO' : 'blueUFO';
-      this.enemies.push(new Enemy(this.context, this.canvas, type));
+      if (i === NUMBER_OF_ENEMIES - 1) {
+        this.enemies.push(new Enemy(this.context, this.canvas, 'asteroid'));
+      } else {
+        this.enemies.push(new Enemy(this.context, this.canvas, type));
+      }
     }
     return true;
+  }
+
+  gameOver = () => {
+    this.resetGame();
   }
 
   animate = () => {
@@ -149,32 +165,34 @@ class Game extends React.Component {
   drawFrame = () => {
     let done = false;
     if (this.context) {
-      // BG
+      // Background scroll
       this.clearCanvas();
       this.drawBgScroll();
-      // The ship
+      // The player ship
       done = this.ship.draw();
       let shipBullets = this.ship.getBullets();
-      // Enemies
+      // Enemies and hits
       for (let enemy of this.enemies) {
-        if (enemy.active === true) {
-          done = enemy.draw();
-          if(enemy.destroyed === false) {
-            for (let bullet of shipBullets) {
-              if(bullet.active === true &&
-                bullet.x > enemy.x &&
-                bullet.x < enemy.x + enemy.width &&
-                bullet.y > enemy.y &&
-                bullet.y < enemy.y + enemy.height) {
-                  enemy.destroy();
-                  break;
-              }
+        done = enemy.draw();
+        if(enemy.destroyed === false) {
+          for (let bullet of shipBullets) {
+            if(bullet.active === true && bullet.didCollideWith(enemy) === true) {
+                enemy.destroy();
+                bullet.active = false; // bullet is used now
+            //TODO CALCULATE POINTS
+                break;
             }
           }
-        } else {
-          done = enemy.reSpawn();
+          // test if the player's ship and an enemy ship have collided
+          if(this.ship.didCollideWith(enemy) === true) {
+            this.ship.destroy();
+          }
         }
       } // ends enemies for loop
+
+      if (this.ship.destroyed === true && this.ship.isExplosionAnimationComplete() === true) {
+        this.gameOver();
+      }
     }
   }
 
@@ -187,11 +205,11 @@ class Game extends React.Component {
     }
   }
 
-   clearCanvas = () => {
-     if (this.context) {
-       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-     }
-   }
+  clearCanvas = () => {
+    if (this.context) {
+      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+  }
 
   render() {
     return <div>

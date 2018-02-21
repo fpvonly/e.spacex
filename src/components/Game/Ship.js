@@ -1,5 +1,6 @@
 import GameObject from './GameObject';
 import Bullet from './Bullet';
+import Explosion from './Explosion';
 
 const KEYS = {
   'Control': 'SHOOT',
@@ -27,8 +28,14 @@ class Ship extends GameObject {
 
     this.shipBg = new Image();
     this.shipBg.src = "assets/images/ship_1.png";
+    this.explosions = [
+      new Explosion(this.context, this.canvas),
+      new Explosion(this.context, this.canvas),
+      new Explosion(this.context, this.canvas),
+    ];
 
     this.bullets = [];
+    this.destroyed = false;
     this.allowShipMovement = false;
     this.activeKeys = {};
     this.steerProxy = new Proxy(this.activeKeys, {
@@ -154,11 +161,26 @@ class Ship extends GameObject {
   }
 
   draw = () => {
-    let done = this.steerAndShoot();
-    for (let bullet of this.bullets.slice()) {
-      done = bullet.draw();
+    // move pixels and shoot new ammo per this current frame
+    if (this.destroyed === false) {
+      this.steerAndShoot();
     }
+    // draw old and new shot ammo
+    for (let bullet of this.bullets.slice()) {
+      bullet.draw();
+    }
+    // draw ship bg
     this.context.drawImage(this.shipBg, this.x, this.y, this.width, this.height);
+    // if ship was destroyed, play three explosion animations
+    if (this.destroyed === true && this.explosions.length > 0) {
+      this.explosions[0].moveToX(this.x + (this.explosions.length === 2 ? 30 : (this.explosions.length * 15)));
+      this.explosions[0].moveToY(this.y + this.height/2 - (this.explosions.length === 2 ? -50 : (this.explosions.length * 15)));
+      this.explosions[0].draw();
+      this.explosions[0].playSound();
+      if (this.explosions[0].isExplosionAnimationComplete() === true) {
+        this.explosions.shift();
+      }
+    }
     return true;
   }
 
@@ -169,6 +191,14 @@ class Ship extends GameObject {
       }
     }
     return this.bullets;
+  }
+
+  destroy = () => {
+    this.destroyed = true;
+  }
+
+  isExplosionAnimationComplete = () => {
+    return (this.explosions.length > 0 ? false : true);
   }
 
 }
