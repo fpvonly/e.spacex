@@ -1,0 +1,6 @@
+- ship_1.png
+- enemy.png
+- enemy_2.png
+
+Under Creative Commons Attribution 4.0 International License.
+From http://millionthvector.blogspot.fi/p/free-sprites.html

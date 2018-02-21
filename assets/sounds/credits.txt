@@ -1,1 +1,9 @@
 Sound effects obtained from https://www.zapsplat.com
+
+- cc0_explosion_large_gas_001.mp3
+- aaj_0022_Lazer_Gun_02_SFX.mp3
+
+
+Background music by Slackbaba ("Drink more tea"):
+
+- slackbaba_drink_more_tea.mp3

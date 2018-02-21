@@ -4,18 +4,19 @@ class GameObject {
     this.context = context;
     this.canvas = canvas;
 
-    this.x = (x === null ? canvas.width/2 : x);
-    this.y = (y === null ? canvas.height - canvas.height/10 : y);
+    this.x = (x === null ? (canvas.width/2) - (width/2) : x);
+    this.y = (y === null ? canvas.height - height : y);
     this.xOriginal = this.x;
     this.yOriginal = this.y;
     this.width = width;
     this.height = height;
     this.speed = speed;
+    this.rotateDegress = 0;
 
     if ("ontouchstart" in document.documentElement) {
       this.width *= 2;
       this.height *= 2;
-      this.y = (y === null ? canvas.height - (canvas.height/10)*2 : y);
+      this.y = (y === null ? canvas.height - height*2 : y);
       this.yOriginal = this.y;
     }
   }
@@ -55,6 +56,14 @@ class GameObject {
 
   resetY = () => {
     this.y = this.yOriginal;
+  }
+
+  rotateToRight = (degrees) => {
+    if (this.rotateDegress >= 360) {
+      this.rotateDegress = 0;
+    }
+    this.rotateDegress += degrees;
+    return this.rotateDegress;
   }
 
 }

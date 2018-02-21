@@ -17,10 +17,16 @@ const KEYS = {
 class Ship extends GameObject {
 
   constructor(context, canvas) {
+
+    let ratio = 287/151; // height/width ratio for image
+    let width = (canvas.height/10 < 287 ? canvas.height/10 : 287);
+    let height = width * ratio;
+
     // context, canvas, width, height
-    super(context, canvas, canvas.height/10, canvas.height/10);
+    super(context, canvas, width*0.8, height*0.8); // 0.8 is scaled down
+
     this.shipBg = new Image();
-    this.shipBg.src = "assets/images/ship.png";
+    this.shipBg.src = "assets/images/ship_1.png";
 
     this.bullets = [];
     this.allowShipMovement = false;
@@ -149,6 +155,9 @@ class Ship extends GameObject {
 
   draw = () => {
     let done = this.steerAndShoot();
+    for (let bullet of this.bullets.slice()) {
+      done = bullet.draw();
+    }
     this.context.drawImage(this.shipBg, this.x, this.y, this.width, this.height);
     return true;
   }
@@ -160,13 +169,6 @@ class Ship extends GameObject {
       }
     }
     return this.bullets;
-  }
-
-  isHit = () => {
-    let hit = false;
-//TODO
-
-    return hit;
   }
 
 }

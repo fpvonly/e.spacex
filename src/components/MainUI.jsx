@@ -16,6 +16,7 @@ class UI extends React.Component {
     this.music = new Audio('assets/sounds/slackbaba_drink_more_tea.mp3');
     this.music.loop = true;
     this.music.volume = 0.3;
+    //this.music.currentTime = 283;
 
     this.state = {
       GAME_STATE: STOP,
