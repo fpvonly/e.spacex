@@ -33,7 +33,6 @@ class Ship extends GameObject {
       new Explosion(this.context, this.canvas),
       new Explosion(this.context, this.canvas),
     ];
-
     this.bullets = [];
     this.destroyed = false;
     this.allowShipMovement = false;
@@ -165,13 +164,15 @@ class Ship extends GameObject {
     if (this.destroyed === false) {
       this.steerAndShoot();
     }
-    // draw old and new shot ammo
-    for (let bullet of this.bullets.slice()) {
-      bullet.draw();
+    // draw old and newly shot ammo
+    for (let bullet of this.bullets) {
+      if (bullet.active === true) {
+        bullet.draw();
+      }
     }
     // draw ship bg
     this.context.drawImage(this.shipBg, this.x, this.y, this.width, this.height);
-    // if ship was destroyed, play three explosion animations
+    // if ship was destroyed, play three complete explosion animations
     if (this.destroyed === true && this.explosions.length > 0) {
       this.explosions[0].moveToX(this.x + (this.explosions.length === 2 ? 30 : (this.explosions.length * 15)));
       this.explosions[0].moveToY(this.y + this.height/2 - (this.explosions.length === 2 ? -50 : (this.explosions.length * 15)));
@@ -184,10 +185,10 @@ class Ship extends GameObject {
     return true;
   }
 
-  getBullets = () => {
-    for (let bullet of this.bullets) {
-      if (bullet.active === false) {
-        this.bullets.shift(); // the inactive bullet is always the first bullet in the array
+  getActiveBullets = () => {
+    for (let i = this.bullets.length - 1; i >= 0; i--) {
+      if (this.bullets[i].active === false) {
+        this.bullets.splice(i, 1);
       }
     }
     return this.bullets;

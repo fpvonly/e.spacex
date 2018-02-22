@@ -20,7 +20,7 @@ class Enemy extends GameObject {
     } else if (type === BLUE_UFO) {
       height = (canvas.height/10 < 198 ? canvas.height/10 : 198);
       width = height;
-    } else if (type === 'asteroid') {
+    } else if (type === ASTEROID) {
       ratio = 320/240; // width/height
       height = (canvas.height/10 < 240 ? canvas.height/10 : 240);
       width = height * ratio;
@@ -49,18 +49,44 @@ class Enemy extends GameObject {
     }
 
     this.bullets = [];
-    this.active = true; // i.e. is within screen
+    this.active = true; // i.e. is between the top and the bottom of the window
     this.destroyed = false; // has not collided
     this.wasDestroyedInYCoord = -1; // the y-coordinate at the moment of destruction
     this.wasDestroyedInXCoord = 0; // the x-coordinate where to draw the explosion, left or right side of the enemy ship
     this.explosion = new Explosion(this.context, this.canvas);
+    this.shootInterval = null;
+    this.shootTime = 6000;
   }
 
   shoot = () => {
+    if (this.y > 25) { // prevent shooting when enemy is not on screen
+      if (this.shootInterval === null) {
+        this.generateShotsPerInterval();
+      }
+
+      this.shootInterval = setInterval(() => {
+        this.generateShotsPerInterval();
+      }, this.shootTime);
+    }
+  }
+
+  generateShotsPerInterval = () => {
     let bulletX = this.x;
     let bulletY = this.y;
-    let bullet = new Bullet(this.context, this.canvas, (bulletX + this.width/2 - 5), bulletY);
-    this.bullets.push(bullet);
+    let newBullets = [];
+    for (let i = 0; i < (this.type === ROTATING_UFO ? 2 : 3); i++) {
+      newBullets.push(
+        new Bullet(
+          this.context,
+          this.canvas,
+          (bulletX + this.width/2 - 5),
+          bulletY + this.height + ((this.type === ROTATING_UFO ? 5 : 15) * i),
+          15,
+          'DOWN',
+          this.type)
+        );
+    }
+    this.bullets.push(...newBullets);
   }
 
   draw = () => {
@@ -93,7 +119,18 @@ class Enemy extends GameObject {
       if (this.active === false || (this.destroyed === true && this.explosion.isExplosionAnimationComplete() === true)) {
         this.reSpawn();
       }
+    }
 
+    if (this.shooting === true) {
+      if (this.shootInterval === null && this.destroyed === false) {
+        this.shoot(); // activate shooting interval
+      }
+      // draw bullets of even destroyed enemies
+      for (let bullet of this.bullets) {
+        if (bullet.active === true) {
+          bullet.draw();
+        }
+      }
     }
     return true;
   }
@@ -106,10 +143,10 @@ class Enemy extends GameObject {
     }
   }
 
-  getBullets = () => {
-    for (let bullet of this.bullets) {
-      if (bullet.active === false) {
-        this.bullets.shift(); // the inactive bullet is always the first bullet in the array
+  getActiveBullets = () => {
+    for (let i = this.bullets.length - 1; i >= 0; i--) {
+      if (this.bullets[i].active === false) {
+        this.bullets.splice(i, 1);
       }
     }
     return this.bullets;
@@ -123,6 +160,8 @@ class Enemy extends GameObject {
     this.active = true
     this.destroyed = false;
     this.explosion.resetFrames();
+    clearInterval(this.shootInterval);
+    this.shootInterval = null;
 
     return true;
   }

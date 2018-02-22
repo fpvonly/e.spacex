@@ -74,26 +74,26 @@ class GameObject {
       source = this;
     }
     // check if source collides and fits inside target object
-    if (source.x * tolerance > target.x * tolerance &&
-      source.x * tolerance < target.x * tolerance + target.width * tolerance &&
-      source.y * tolerance > target.y * tolerance &&
-      source.y * tolerance < target.y * tolerance + target.height * tolerance) {
+    if (source.x > target.x &&
+      source.x < target.x + target.width &&
+      source.y > target.y &&
+      source.y < target.y + target.height) {
         hit = true;
     }
 
     // detect if source's RIGHT side overlaps with target object
-    if (source.x * tolerance + source.width * tolerance > target.x * tolerance &&
-      source.x * tolerance + source.width * tolerance < target.x * tolerance  + target.width * tolerance &&
-      source.y * tolerance < target.y * tolerance  + target.height * tolerance &&
-      source.y * tolerance + source.height * tolerance > target.y * tolerance) {
+    if (source.x + source.width * tolerance > target.x &&
+      source.x + source.width * tolerance < target.x + target.width &&
+      source.y < target.y  + target.height &&
+      source.y + source.height * tolerance > target.y) {
         hit = true;
     }
 
     // detect if source's LEFT side overlaps with target object
-    if (source.x * tolerance < target.x * tolerance + target.width * tolerance &&
-      source.x * tolerance + source.width * tolerance > target.x * tolerance + target.width * tolerance &&
-      source.y * tolerance < target.y * tolerance  + target.height * tolerance &&
-      source.y * tolerance + source.height * tolerance > target.y * tolerance) {
+    if (source.x < target.x + target.width * tolerance &&
+      source.x + source.width > target.x + target.width * tolerance &&
+      source.y < target.y + target.height * tolerance &&
+      source.y + source.height > target.y) {
       hit = true;
     }
     return hit;

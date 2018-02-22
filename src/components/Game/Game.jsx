@@ -8,6 +8,10 @@ import Enemy from './Enemy';
 const STOP = 'STOP';
 const RUN = 'RUN';
 const NUMBER_OF_ENEMIES = 11;
+const ASTEROID = 'asteroid';
+const BLUE_UFO = 'blueUFO';
+const ROTATING_UFO = 'rotatingUFO';
+
 
 class Game extends React.Component {
 
@@ -35,6 +39,7 @@ class Game extends React.Component {
     this.scrollX = 0;
     this.ship = null;
     this.enemies = [];
+    this.points = 0;
   }
 
   static defaultProps = {
@@ -137,7 +142,7 @@ class Game extends React.Component {
     this.enemies = [];
     // let's pre-create the re-spawning enemies so that the drawing loop is lighter on performance (because of images)
     for (let i = 0; i < NUMBER_OF_ENEMIES; i++) {
-      let type = (i%3 === 0) ? 'rotatingUFO' : 'blueUFO';
+      let type = (i%3 === 0) ? ROTATING_UFO : BLUE_UFO;
       if (i === NUMBER_OF_ENEMIES - 1) {
         this.enemies.push(new Enemy(this.context, this.canvas, 'asteroid'));
       } else {
@@ -148,6 +153,8 @@ class Game extends React.Component {
   }
 
   gameOver = () => {
+  //TODO show points in UI
+    console.log('this.points', this.points);
     this.resetGame();
   }
 
@@ -165,25 +172,36 @@ class Game extends React.Component {
   drawFrame = () => {
     let done = false;
     if (this.context) {
+
       // Background scroll
       this.clearCanvas();
       this.drawBgScroll();
       // The player ship
       done = this.ship.draw();
-      let shipBullets = this.ship.getBullets();
+      let shipBullets = this.ship.getActiveBullets();
       // Enemies and hits
       for (let enemy of this.enemies) {
         done = enemy.draw();
         if(enemy.destroyed === false) {
-          for (let bullet of shipBullets) {
-            if(bullet.active === true && bullet.didCollideWith(enemy) === true) {
+          // did player's ship bullets hit any of the enemies?
+          for (let playerBullet of shipBullets) {
+            if(playerBullet.active === true && playerBullet.didCollideWith(enemy) === true) {
                 enemy.destroy();
-                bullet.active = false; // bullet is used now
-            //TODO CALCULATE POINTS
+                playerBullet.active = false; // bullet is used now
+                this.points++;
                 break;
             }
           }
-          // test if the player's ship and an enemy ship have collided
+          // did enemy ship's bullets the player's ship?
+          let enemyBullets = enemy.getActiveBullets();
+          for (let enemyBullet of enemyBullets) {
+            if(enemyBullet.active === true && enemyBullet.didCollideWith(this.ship) === true) {
+              enemyBullet.active = false; // bullet is used now
+              this.ship.destroy();
+              break;
+            }
+          }
+          // did player's ship and an enemy ship collide?
           if(this.ship.didCollideWith(enemy) === true) {
             this.ship.destroy();
           }

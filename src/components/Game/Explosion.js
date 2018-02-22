@@ -9,7 +9,6 @@ class Explosion extends GameObject {
 
     this.blast = new Audio("assets/sounds/cc0_explosion_large_gas_001.mp3");
     this.blast.volume = 0.2;
-
     this.explosionFrames = [];
     this.resetFrames();
   }
