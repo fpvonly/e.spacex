@@ -2,16 +2,10 @@ import React from 'react';
 import {render} from 'react-dom';
 import PropTypes from 'prop-types';
 
-import Ship from './Ship';
-import Enemy from './Enemy';
-
-const STOP = 'STOP';
-const RUN = 'RUN';
-const NUMBER_OF_ENEMIES = 11;
-const ASTEROID = 'asteroid';
-const BLUE_UFO = 'blueUFO';
-const ROTATING_UFO = 'rotatingUFO';
-
+import Sprites from './Objects/Sprite';
+import Ship from './Objects/Ship';
+import Enemy from './Objects/Enemy';
+import * as C from './Constants';
 
 class Game extends React.Component {
 
@@ -28,8 +22,7 @@ class Game extends React.Component {
     this.interval = 1000/this.fps;
     this.delta;
 
-	  this.scrollBackground = new Image();
-	  this.scrollBackground.src = "assets/images/game_scroll_stars.png";
+	  this.scrollBackground = Sprites.getGameBg();
     if (window.innerHeight < 800) {
       this.scrollSpeed = 1;
     } else {
@@ -81,14 +74,14 @@ class Game extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (nextProps.gameState === RUN && this.props.gameState === RUN) {
+    if (nextProps.gameState === C.RUN && this.props.gameState === C.RUN) {
       return false;
     }
     return true;
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(this.props.gameState === RUN && prevProps.gameState === STOP) {
+    if(this.props.gameState === C.RUN && prevProps.gameState === C.STOP) {
       this.startGame();
     }
   }
@@ -101,7 +94,7 @@ class Game extends React.Component {
   handleDocumentVisibilityChange = () => {
     if (document.hidden === true) {
       this.resetGame();
-      this.props.setGameState(STOP);
+      this.props.setGameState(C.STOP);
     }
   }
 
@@ -110,13 +103,13 @@ class Game extends React.Component {
     this.canvas.height = window.innerHeight;
 
     this.resetGame();
-    this.props.setGameState(STOP);
+    this.props.setGameState(C.STOP);
   }
 
   stopGame = (e) => {
     if (e.key === 'Escape' || e.keyCode === 27) {
       this.resetGame();
-      this.props.setGameState(STOP);
+      this.props.setGameState(C.STOP);
     }
   }
 
@@ -141,10 +134,10 @@ class Game extends React.Component {
     this.ship = new Ship(this.context, this.canvas);
     this.enemies = [];
     // let's pre-create the re-spawning enemies so that the drawing loop is lighter on performance (because of images)
-    for (let i = 0; i < NUMBER_OF_ENEMIES; i++) {
-      let type = (i%3 === 0) ? ROTATING_UFO : BLUE_UFO;
-      if (i === NUMBER_OF_ENEMIES - 1) {
-        this.enemies.push(new Enemy(this.context, this.canvas, 'asteroid'));
+    for (let i = 0; i < C.NUMBER_OF_ENEMIES; i++) {
+      let type = (i%3 === 0) ? C.ROTATING_UFO : C.BLUE_UFO;
+      if (i === C.NUMBER_OF_ENEMIES - 1) {
+        this.enemies.push(new Enemy(this.context, this.canvas, C.ASTEROID));
       } else {
         this.enemies.push(new Enemy(this.context, this.canvas, type));
       }
@@ -236,7 +229,7 @@ class Game extends React.Component {
         ref={this.getCanvasRef}
         width={window.innerWidth}
         height={window.innerHeight}
-        style={(this.props.gameState === RUN ? {'cursor': 'none'} : null)}>
+        style={(this.props.gameState === C.RUN ? {'cursor': 'none'} : null)}>
           Your browser doesn't support HTML5 canvas API. Please update your browser.
       </canvas>
     </div>

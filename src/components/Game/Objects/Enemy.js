@@ -1,56 +1,48 @@
 import GameObject from './GameObject';
+import Sprites from './Sprite';
 import Bullet from './Bullet';
 import Explosion from './Explosion';
-
-const ASTEROID = 'asteroid';
-const BLUE_UFO = 'blueUFO';
-const ROTATING_UFO = 'rotatingUFO';
+import * as C from '../Constants';
 
 class Enemy extends GameObject {
 
-  constructor(context, canvas, type = ROTATING_UFO) {
+  constructor(context, canvas, type = C.ROTATING_UFO) {
 
     let ratio = 0;
     let width =  0;
     let height = 0;
-
-    if (type === ROTATING_UFO) {
+    if (type === C.ROTATING_UFO) {
       height = (canvas.height/10 < 512 ? canvas.height/10 : 512);
       width = height;
-    } else if (type === BLUE_UFO) {
+    } else if (type === C.BLUE_UFO) {
       height = (canvas.height/10 < 198 ? canvas.height/10 : 198);
       width = height;
-    } else if (type === ASTEROID) {
+    } else if (type === C.ASTEROID) {
       ratio = 320/240; // width/height
       height = (canvas.height/10 < 240 ? canvas.height/10 : 240);
       width = height * ratio;
     }
-
     let randomX = Math.floor(Math.random() * (canvas.width - width));
     let randomY = Math.floor(Math.random() * (canvas.height - height));
     randomY = -Math.abs(randomY)
 
-    // context, canvas, width, height, x, y, speed
-    super(context, canvas, width, height, randomX, randomY, (type === ASTEROID ? 8 : 5), (type === ASTEROID ? 0.1 : 0.05));
+    // context, canvas, width, height, x, y, speed, rotation speed
+    super(context, canvas, width, height, randomX, randomY, (type === C.ASTEROID ? 8 : 5), (type === C.ASTEROID ? 0.1 : 0.05));
 
     this.type = type;
     this.shooting = true;
-    this.enemyBg = new Image();
-    if (this.type === ROTATING_UFO) {
-      this.enemyBg.src = "assets/images/enemy.png";
+    this.enemyBg = Sprites.getEnemySprite(this.type);
+    if (this.type === C.ROTATING_UFO) {
       this.rotating = true;
-    } else if (this.type === BLUE_UFO) {
-      this.enemyBg.src = "assets/images/enemy_2.png";
+    } else if (this.type === C.BLUE_UFO) {
       this.rotating = false;
-    } else if (this.type === ASTEROID) {
-      this.enemyBg.src = "assets/images/a10003.png";
+    } else if (this.type === C.ASTEROID) {
       this.rotating = true;
       this.shooting = false;
     }
-
     this.bullets = [];
     this.active = true; // i.e. is between the top and the bottom of the window
-    this.destroyed = false; // has not collided
+    this.destroyed = false; // has not collided with player ship or player bullet
     this.wasDestroyedInYCoord = -1; // the y-coordinate at the moment of destruction
     this.wasDestroyedInXCoord = 0; // the x-coordinate where to draw the explosion, left or right side of the enemy ship
     this.explosion = new Explosion(this.context, this.canvas);
@@ -74,13 +66,13 @@ class Enemy extends GameObject {
     let bulletX = this.x;
     let bulletY = this.y;
     let newBullets = [];
-    for (let i = 0; i < (this.type === ROTATING_UFO ? 2 : 3); i++) {
+    for (let i = 0; i < (this.type === C.ROTATING_UFO ? 2 : 3); i++) {
       newBullets.push(
         new Bullet(
           this.context,
           this.canvas,
           (bulletX + this.width/2 - 5),
-          bulletY + this.height + ((this.type === ROTATING_UFO ? 5 : 15) * i),
+          bulletY + this.height + ((this.type === C.ROTATING_UFO ? 5 : 15) * i),
           15,
           'DOWN',
           this.type)
@@ -93,7 +85,7 @@ class Enemy extends GameObject {
     if (this.active === true) {
       if (this.y < this.canvas.height + this.height/2) {
         this.moveDown(this.speed);
-        if (this.type === ASTEROID) {
+        if (this.type === C.ASTEROID) {
           this.moveLeft(this.speed/2);
         }
       } else {
@@ -114,7 +106,6 @@ class Enemy extends GameObject {
         this.explosion.moveToX(this.wasDestroyedInXCoord); // this coord remains the same until the end of explosion
         this.explosion.moveToY(this.y + this.height/2);
         this.explosion.draw();
-        this.explosion.playSound();
       }
       if (this.active === false || (this.destroyed === true && this.explosion.isExplosionAnimationComplete() === true)) {
         this.reSpawn();

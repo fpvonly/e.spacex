@@ -1,19 +1,8 @@
 import GameObject from './GameObject';
+import Sprites from './Sprite';
 import Bullet from './Bullet';
 import Explosion from './Explosion';
-
-const KEYS = {
-  'Control': 'SHOOT',
-  'ArrowLeft': 'LEFT',
-  'ArrowUp': 'UP',
-  'ArrowRight': 'RIGHT',
-  'ArrowDown': 'DOWN',
-  17: 'SHOOT', // ctrl
-  37: 'LEFT',
-  38: 'UP',
-  39: 'RIGHT',
-  40: 'DOWN'
-};
+import * as C from '../Constants';
 
 class Ship extends GameObject {
 
@@ -26,8 +15,7 @@ class Ship extends GameObject {
     // context, canvas, width, height
     super(context, canvas, width*0.8, height*0.8); // 0.8 is scaled down
 
-    this.shipBg = new Image();
-    this.shipBg.src = "assets/images/ship_1.png";
+    this.shipBg = Sprites.getPlayerShipSprite();
     this.explosions = [
       new Explosion(this.context, this.canvas),
       new Explosion(this.context, this.canvas),
@@ -79,7 +67,7 @@ class Ship extends GameObject {
     let bulletY = this.y;
     let bullet = new Bullet(this.context, this.canvas, (bulletX + this.width/2 - 5), bulletY);
     this.bullets.push(bullet);
-    bullet.playSound();
+
   }
 
   steerAndShoot = () => {
@@ -124,12 +112,12 @@ class Ship extends GameObject {
 
   addActiveDownKeys = (e) => {
     e.preventDefault();
-    this.steerProxy[KEYS[e.key || e.keyCode]] = true;
+    this.steerProxy[C.KEYS[e.key || e.keyCode]] = true;
   }
 
   removeActiveDownKeys = (e) => {
     e.preventDefault();
-    Reflect.deleteProperty(this.steerProxy, KEYS[e.key || e.keyCode]);
+    Reflect.deleteProperty(this.steerProxy, C.KEYS[e.key || e.keyCode]);
   }
 
   handleMouseMove = (e) => {

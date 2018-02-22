@@ -1,48 +1,40 @@
 import React from 'react';
 import {render} from 'react-dom';
 
-import Menu from './Menu.jsx';
+import Sounds from './Game/Objects/Sound';
+import * as C from './Game/Constants';
 import Game from './Game/Game.jsx';
+import Menu from './Menu.jsx';
 import TitleBanner from './TitleBanner.jsx';
-
-const STOP = 'STOP';
-const RUN = 'RUN';
 
 class UI extends React.Component {
 
   constructor(props) {
     super(props);
 
-    this.music = new Audio('assets/sounds/slackbaba_drink_more_tea.mp3');
-    this.music.loop = true;
-    this.music.volume = 0.3;
-    //this.music.currentTime = 283;
-
     this.state = {
-      GAME_STATE: STOP,
+      GAME_STATE: C.STOP,
       musicState: this.getmusicStateFromStorage()
     }
   }
 
   componentDidMount() {
     if(this.state.musicState === true) {
-      this.music.play();
+      Sounds.playMusic();
     }
   }
 
-  setGameState = (state = STOP) => {
+  setGameState = (state = C.STOP, info = '') => {
     this.setState({GAME_STATE: state});
   }
 
   controlMusic = () => {
-    if (!this.music.paused) {
-      this.music.pause();
+    if (this.state.musicState === true) {
+      Sounds.pauseMusic();
       this.setmusicStateToStorage(false);
-      return false;
     } else {
-      this.music.play();
+      Sounds.playMusic();
       this.setmusicStateToStorage(true);
-      return true;
     }
   }
 

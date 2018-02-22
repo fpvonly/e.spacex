@@ -2,8 +2,7 @@ import React from 'react';
 import {render} from 'react-dom';
 import PropTypes from 'prop-types';
 
-const STOP = 'STOP';
-const RUN = 'RUN';
+import * as C from './Game/Constants';
 
 class TitleBanner extends React.Component {
 
@@ -21,7 +20,7 @@ class TitleBanner extends React.Component {
 
   render() {
     let banner = null;
-    if (this.props.gameState === STOP) {
+    if (this.props.gameState === C.STOP) {
       banner = <div className='banner'>
         <div className='title'>e.spaceX</div>
         <div className='arc'></div>

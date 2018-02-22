@@ -1,14 +1,14 @@
 import GameObject from './GameObject';
+import Sounds from './Sound';
+import Sprites from './Sprite';
 
 class Explosion extends GameObject {
 
   constructor(context, canvas, x, y) {
-
     // context, canvas, width, height, x, y
     super(context, canvas, 40, 40, x, y);
 
-    this.blast = new Audio("assets/sounds/cc0_explosion_large_gas_001.mp3");
-    this.blast.volume = 0.2;
+    this.blastPlayed = false;
     this.explosionFrames = [];
     this.resetFrames();
   }
@@ -18,11 +18,15 @@ class Explosion extends GameObject {
       this.context.drawImage(this.explosionFrames[0], this.x, this.y, this.width, this.height);
       this.explosionFrames.shift();
     }
+    this.playSound();
     return true;
   }
 
   playSound = () => {
-    this.blast.play();
+    if (this.blastPlayed === false) {
+      Sounds.playExplosionSound();
+      this.blastPlayed = true;
+    }
   }
 
   isExplosionAnimationComplete = () => {
@@ -34,12 +38,8 @@ class Explosion extends GameObject {
   }
 
   resetFrames = () => {
-    this.explosionFrames = [];
-    for (let i = 1; i <= 13; i++) {
-      let explosionBg = new Image();
-      explosionBg.src = 'assets/images/explosions/' + i + '.png';
-      this.explosionFrames.push(explosionBg);
-    }
+    this.explosionFrames = Sprites.getExplosionSpriteAnimFrames();
+    this.blastPlayed = false;
   }
 
 }
