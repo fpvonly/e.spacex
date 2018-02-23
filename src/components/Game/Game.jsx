@@ -2,6 +2,7 @@ import React from 'react';
 import {render} from 'react-dom';
 import PropTypes from 'prop-types';
 
+import DebugFPS from './DebugFPS.jsx';
 import Sprites from './Objects/Sprite';
 import Ship from './Objects/Ship';
 import Enemy from './Objects/Enemy';
@@ -19,6 +20,7 @@ class Game extends React.Component {
 
     this.canvas = null;
     this.context = null;
+    this.debugFPSREF = null;
 
     this.GAME_OVER = false;
     this.animation = null; // the requested animation frame
@@ -96,6 +98,10 @@ class Game extends React.Component {
     this.context = c.getContext("2d");
   }
 
+  getDebugFPSRef = (c) => {
+    this.debugFPSREF = c;
+  }
+
   handleDocumentVisibilityChange = () => {
     if (document.hidden === true) {
       this.resetGame();
@@ -142,7 +148,7 @@ class Game extends React.Component {
     this.GAME_OVER = false;
     this.scrollY = 0;
     this.scrollX = 0;
-    this.scrollSpeed = 1;  
+    this.scrollSpeed = 1;
     this.ship = new Ship(this.context, this.canvas);
     this.enemies = [];
     // let's pre-create the re-spawning enemies so that the drawing loop is lighter on performance (because of images)
@@ -162,12 +168,12 @@ class Game extends React.Component {
     this.context.lineWidth = 10;
     this.context.strokeRect(0, 0, this.canvas.width, this.canvas.height);
     let fontSize = (this.canvas.width/2 >= 960 ? 100 : ((this.canvas.width/2)/960) * 100);
-    this.context.font = fontSize + 'px Audiowide-Regular';
+    this.context.font = fontSize + 'px Audiowide-Regular,Arial';
     this.context.fillStyle = '#FFFFFF';
     this.context.textAlign = "center";
     this.context.fillText("GAME OVER!", this.canvas.width/2, ((this.canvas.height/2) * 0.1) + 70);
     this.context.fillText("Your points: " + this.points, this.canvas.width/2, this.canvas.height/2);
-    this.context.font = '15px Audiowide-Regular';
+    this.context.font = '15px Audiowide-Regular,Arial';
     this.context.fillStyle = '#FFFFFF';
     this.context.textAlign = "center";
     this.context.fillText("Press esc or click on the screen to return to main menu", this.canvas.width/2, (this.canvas.height) - 70);
@@ -196,14 +202,13 @@ class Game extends React.Component {
     this.drawFrame();
 
     if (DEBUG === true) {
-      document.getElementsByClassName('debugFPS')[0].innerHTML = this.fps + ', ' + window.GAME_FPS_ADJUST;
+      this.debugFPSREF.updateFPS(this.fps);
     }
   }
 
   drawFrame = () => {
     let done = false;
     if (this.context) {
-
       // Background scroll
       this.clearCanvas();
       this.drawBgScroll();
@@ -217,8 +222,8 @@ class Game extends React.Component {
           // Enemies and hits
           for (let enemy of this.enemies) {
             done = enemy.draw();
-            if(enemy.destroyed === false) {
-              // did player's ship bullets hit any of the enemies?
+            if(enemy.destroyed === false && enemy.active === true) {
+              // did player's ship bullets hit the enemy?
               for (let playerBullet of shipBullets) {
                 if(playerBullet.active === true && playerBullet.didCollideWith(enemy) === true) {
                     enemy.destroy();
@@ -276,6 +281,7 @@ class Game extends React.Component {
         style={(this.props.gameState === C.RUN ? {'cursor': 'none'} : null)}>
           Your browser doesn't support HTML5 canvas API. Please update your browser.
       </canvas>
+      {(DEBUG === true ? <DebugFPS ref={this.getDebugFPSRef} /> : null)}
     </div>
   }
 }
