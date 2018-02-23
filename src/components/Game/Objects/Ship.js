@@ -22,6 +22,8 @@ class Ship extends GameObject {
       new Explosion(this.context, this.canvas),
     ];
     this.bullets = [];
+    this.then = Date.now(); // previous shoot time frame, for throttling the shooting
+    this.shootFPS = 12; // shoot approx 12 shots/second at approx 60fps of the game
     this.destroyed = false;
     this.allowShipMovement = false;
     this.activeKeys = {};
@@ -63,11 +65,15 @@ class Ship extends GameObject {
   }
 
   shoot = () => {
-    let bulletX = this.x;
-    let bulletY = this.y;
-    let bullet = new Bullet(this.context, this.canvas, (bulletX + this.width/2 - 5), bulletY);
-    this.bullets.push(bullet);
-
+    this.now = Date.now();
+    this.delta = this.now - this.then;
+    if (this.delta > 1000/this.shootFPS) {
+      this.then = this.now - (this.delta % 1000/this.shootFPS);
+      let bulletX = this.x;
+      let bulletY = this.y;
+      let bullet = new Bullet(this.context, this.canvas, (bulletX + this.width/2 - 5), bulletY);
+      this.bullets.push(bullet);
+    }
   }
 
   steerAndShoot = () => {
@@ -77,22 +83,22 @@ class Ship extends GameObject {
         switch(direction) {
           case 'LEFT':
             if (this.x > 0) {
-              this.moveLeft(30);
+              this.moveLeft(15);
             }
             break;
           case 'RIGHT':
             if (this.x <= this.canvas.width - this.width) {
-              this.moveRight(30);
+              this.moveRight(15);
             }
             break;
           case 'UP':
             if (this.y > 0) {
-              this.moveUp(30);
+              this.moveUp(15);
             }
             break;
           case 'DOWN':
             if (this.y < this.canvas.height - this.height) {
-              this.moveDown(30);
+              this.moveDown(15);
             }
             break;
           case 'X_COORD': // for mouse and touch events

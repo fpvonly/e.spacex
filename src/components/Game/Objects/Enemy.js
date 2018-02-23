@@ -27,7 +27,7 @@ class Enemy extends GameObject {
     randomY = -Math.abs(randomY)
 
     // context, canvas, width, height, x, y, speed, rotation speed
-    super(context, canvas, width, height, randomX, randomY, (type === C.ASTEROID ? 8 : 5), (type === C.ASTEROID ? 0.1 : 0.05));
+    super(context, canvas, width, height, randomX, randomY, (type === C.ASTEROID ? 5 : 3), (type === C.ASTEROID ? 0.1 : 0.05));
 
     this.type = type;
     this.shooting = true;
@@ -73,7 +73,7 @@ class Enemy extends GameObject {
           this.canvas,
           (bulletX + this.width/2 - 5),
           bulletY + this.height + ((this.type === C.ROTATING_UFO ? 5 : 15) * i),
-          15,
+          5,
           'DOWN',
           this.type)
         );

@@ -7,7 +7,7 @@ class Sound {
   static initializeStaticClass() {
 
     // player's ship gun sounds
-    for (let i = 0; i< 30; i++) {
+    for (let i = 0; i< 60; i++) { // some extra sound objects to create buffer for quick events that require sounds at 60fps
       let gunBlast = new Audio("assets/sounds/aaj_0022_Lazer_Gun_02_SFX.mp3");
       gunBlast.volume = 0.2;
       gunBlast.preload = 'auto';
@@ -18,7 +18,7 @@ class Sound {
     }
 
     // explosion sounds
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 60; i++) { // some extra sound objects to create buffer for quick events that require sounds at 60fps
       let blast = new Audio("assets/sounds/cc0_explosion_large_gas_001.mp3");
       blast.volume = 0.2;
       blast.preload = 'auto';

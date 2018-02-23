@@ -54,6 +54,10 @@ class UI extends React.Component {
   }
 
   render() {
+    let debugFPS = null;
+    if (process.env.NODE_ENV === 'development') {
+      debugFPS = <div className='debugFPS'>FPS</div>
+    }
     return <div>
       <Game
         gameState={this.state.GAME_STATE}
@@ -64,6 +68,7 @@ class UI extends React.Component {
         controlMusic={this.controlMusic}
         musicState={this.state.musicState} />
       <TitleBanner gameState={this.state.GAME_STATE} />
+      {debugFPS}
     </div>
   }
 }

@@ -23,19 +23,19 @@ class GameObject {
   }
 
   moveRight = (amount = 1) => {
-    this.x += amount;
+    this.x += amount * window.WINDOW_HEIGHT_ADJUST * window.GAME_FPS_ADJUST;
   }
 
   moveLeft = (amount = 1) => {
-    this.x -= amount;
+    this.x -= amount * window.WINDOW_HEIGHT_ADJUST * window.GAME_FPS_ADJUST;
   }
 
   moveUp = (amount = 1) => {
-    this.y -= amount;
+    this.y -= amount * window.WINDOW_HEIGHT_ADJUST * window.GAME_FPS_ADJUST;
   }
 
   moveDown = (amount = 1) => {
-    this.y += amount;
+    this.y += amount * window.WINDOW_HEIGHT_ADJUST * window.GAME_FPS_ADJUST;
   }
 
   moveToX = (x = this.xOriginal) => {
@@ -63,7 +63,7 @@ class GameObject {
     if (this.rotateDegress >= 360) {
       this.rotateDegress = 0;
     }
-    this.rotateDegress += degrees;
+    this.rotateDegress += (degrees * window.WINDOW_HEIGHT_ADJUST * window.GAME_FPS_ADJUST);
     return this.rotateDegress;
   }
 

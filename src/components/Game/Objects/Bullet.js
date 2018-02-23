@@ -5,9 +5,9 @@ import * as C from '../Constants';
 
 class Bullet extends GameObject {
 
-  constructor(context, canvas, x, y, speed = 40, direction = 'UP', type = C.PLAYER_SHIP) {
+  constructor(context, canvas, x, y, speed = 15, direction = 'UP', type = C.PLAYER_SHIP) {
     // context, canvas, width, height, x, y, speed
-    super(context, canvas, 9, 5, x, y, speed);
+    super(context, canvas, 9 * window.WINDOW_HEIGHT_ADJUST, 5 * window.WINDOW_HEIGHT_ADJUST, x, y, speed);
 
     this.bulletBg = Sprites.getBulletSprite(type);
     if (type === C.BLUE_UFO || type === C.ROTATING_UFO) {

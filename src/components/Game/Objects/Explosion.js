@@ -6,8 +6,10 @@ class Explosion extends GameObject {
 
   constructor(context, canvas, x, y) {
     // context, canvas, width, height, x, y
-    super(context, canvas, 40, 40, x, y);
+    super(context, canvas, 40 * window.WINDOW_HEIGHT_ADJUST, 40 * window.WINDOW_HEIGHT_ADJUST, x, y);
 
+    this.then = Date.now(); // previous explosion time frame, for throttling the animation
+    this.explosionFPS = 12;
     this.blastPlayed = false;
     this.explosionFrames = [];
     this.resetFrames();
@@ -16,7 +18,12 @@ class Explosion extends GameObject {
   draw = () => {
     if (this.isExplosionAnimationComplete() === false) {
       this.context.drawImage(this.explosionFrames[0], this.x, this.y, this.width, this.height);
-      this.explosionFrames.shift();
+      this.now = Date.now();
+      this.delta = this.now - this.then;
+      if (this.delta > 1000/this.explosionFPS) {
+        this.then = this.now - (this.delta % 1000/this.explosionFPS);
+        this.explosionFrames.shift();
+      }
     }
     this.playSound();
     return true;
