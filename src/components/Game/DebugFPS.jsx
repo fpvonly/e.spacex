@@ -1,6 +1,5 @@
 import React from 'react';
 import {render, createPortal} from 'react-dom';
-import PropTypes from 'prop-types';
 
 class DebugFPS extends React.Component {
 
