@@ -14,7 +14,8 @@ class UI extends React.Component {
 
     this.state = {
       GAME_STATE: C.STOP,
-      musicState: this.getmusicStateFromStorage()
+      musicState: this.getmusicStateFromStorage(),
+      selectedBgClass: this.getBGFromStorage()
     }
   }
 
@@ -53,16 +54,30 @@ class UI extends React.Component {
     return (value && value !== null ? (value == 'true') : false);
   }
 
+  getBGFromStorage = () => {
+    let value = null;
+    if (window.localStorage) {
+      value = localStorage.getItem('gameBg');
+    }
+    return (value && value !== null ? value : 'space2.jpg');
+  }
+
+  updateBGCallback = () => {
+    this.setState({selectedBgClass: this.getBGFromStorage()});
+  }
+
   render() {
     return <div>
       <Game
+        selectedBgClass={this.state.selectedBgClass}
         gameState={this.state.GAME_STATE}
         setGameState={this.setGameState} />
       <Menu
-        gameState={this.state.GAME_STATE}
+        visible={(this.state.GAME_STATE !== C.RUN ? true : false)}
         setGameState={this.setGameState}
         controlMusic={this.controlMusic}
-        musicState={this.state.musicState} />
+        musicState={this.state.musicState}
+        updateBGCallback={this.updateBGCallback} />
       <TitleBanner gameState={this.state.GAME_STATE} />
     </div>
   }

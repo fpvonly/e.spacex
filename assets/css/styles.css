@@ -29,7 +29,7 @@ footer, header, hgroup, menu, nav, section {
   display: block;
 }
 html {
-  font-size: 62.5%;
+  font-size: 62.5% !important;
 }
 body {
   line-height: 1;
@@ -65,6 +65,7 @@ body {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  font-family: 'Audiowide-Regular', 'Arial';
 }
 
 #app, #app>div:first-child {
@@ -93,6 +94,14 @@ canvas {
   height: 100%;
   position: absolute;
   background-size: cover;
+}
+
+.bg.space1 {
+  background: url('../images/space1.jpg') !important;
+}
+
+.bg.space2 {
+  background: url('../images/space2.jpg') !important;
 }
 
 .banner {
@@ -264,6 +273,108 @@ canvas {
   50% { text-shadow: 0rem 0rem 0.2rem rgba(255,255,255,0.2); }
   100% { text-shadow: 0rem 0rem 0.2rem rgba(255,255,255,0.7); }
 }
+
+.extra_sub_menu {
+  left: 0;
+  width: 100%;
+  height: 35%;
+  background: transparent;
+  position: absolute;
+  bottom: 0;
+}
+
+.extra_sub_menu .padding {
+  height: 95%;
+  width: 95%;
+  padding: 2.5%;
+}
+
+.extra_sub_menu .bg {
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+  position: absolute;
+  opacity: 0.4;
+}
+
+.extra_sub_menu .extra_close_btn {
+  right: 0;
+  top: 10px;
+  right: 1vw;
+  top: 1vw;
+  font-size: 1.5vw;
+  color: #fff;
+  position: absolute;
+  cursor: pointer;
+}
+
+.extra_sub_menu .extra_close_btn:hover {
+  color: #290469;
+}
+
+.extra_sub_menu .bg_selection_title {
+  padding-bottom: 0.5vw;
+  display: inline-block;
+  border-bottom: 1px solid #fff;
+  margin-bottom: 0.8vw;
+  color: #fff;
+  font-size: 1.5vw;
+  width: 40%;
+}
+
+.extra_bg_options {
+  width: 40%;
+  position: absolute;
+  height: 70%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-content: flex-start;
+  justify-content: flex-start;
+}
+
+.extra_bg_options .bg_option {
+  margin: 0 auto;
+  flex-grow: 1;
+  padding: 0 10% 0 0;
+}
+
+.extra_bg_options .bg_option.selected img {
+  border: 0.3vw solid #ffffff;
+}
+
+.extra_bg_options .default_bg {
+  order: 1;
+}
+
+.extra_bg_options .extra_bg {
+  order: 1;
+}
+
+.extra_bg_options .default_bg img, .extra_bg_options .extra_bg img {
+  border-radius: 1.5vw;
+  border: 0.3vw solid #545454;
+  position: initial;
+}
+
+.extra_bg_options .default_bg:hover img, .extra_bg_options .extra_bg:hover img {
+  cursor: pointer;
+  border: 0.3vw solid #ffffff;
+}
+
+.slide-enter { bottom: -35%; }
+.extra_sub_menu.slide-enter.slide-enter-active {
+  bottom: 0;
+  transition: all 0.5s ease-out;
+}
+.extra_sub_menu.slide-leave {
+  bottom: 0;
+}
+.extra_sub_menu.slide-leave.slide-leave-active {
+  bottom: -35%;
+  transition: all 0.5s ease-out;
+}
+
 
 /* Debugging related */
 

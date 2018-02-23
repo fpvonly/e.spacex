@@ -33,22 +33,22 @@ class Game extends React.Component {
     this.allowEnemiesToAttack = false;
     this.points = 0;
 
-    if (DEBUG) {
-      this.fps = 0;
-      this.previousFrameTime = 0;
-      this.framesThisSecond = 0;
-    }
+    this.fps = 0;
+    this.previousFrameTime = 0;
+    this.framesThisSecond = 0;
     this.lastFpsUpdate = 0;
   }
 
   static defaultProps = {
     gameState: '',
-    setGameState: () => {}
+    setGameState: () => {},
+    selectedBgClass: ''
   };
 
   static propTypes = {
     gameState: PropTypes.string,
-    setGameState: PropTypes.func
+    setGameState: PropTypes.func,
+    selectedBgClass: PropTypes.string
   };
 
   componentWillMount() {
@@ -257,7 +257,7 @@ class Game extends React.Component {
   }
 
   drawBgScroll = () =>{
-		this.scrollY += this.scrollSpeed * window.WINDOW_HEIGHT_ADJUST * window.GAME_FPS_ADJUST;
+		this.scrollY += this.scrollSpeed * window.WINDOW_HEIGHT_ADJUST; // no fps adjust for bg scroll as it's too noticeable
 		this.context.drawImage(this.scrollBackground, this.scrollX, this.scrollY, this.canvas.width, this.canvas.height);
 		this.context.drawImage(this.scrollBackground, this.scrollX, this.scrollY - this.canvas.height, this.canvas.width, this.canvas.height);
 		if (this.scrollY >= this.canvas.height) {
@@ -273,7 +273,7 @@ class Game extends React.Component {
 
   render() {
     return <div>
-      <div className='bg' />
+      <div className={'bg ' + this.props.selectedBgClass.split('.')[0]} />
       <canvas
         ref={this.getCanvasRef}
         width={window.innerWidth}
