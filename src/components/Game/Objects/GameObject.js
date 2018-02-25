@@ -56,7 +56,7 @@ class GameObject {
     if (this.rotateDegress >= 360) {
       this.rotateDegress = 0;
     }
-    this.rotateDegress += (degrees * window.CANVAS_HEIGHT_ADJUST * window.GAME_FPS_ADJUST);
+    this.rotateDegress += degrees;
     return this.rotateDegress;
   }
 

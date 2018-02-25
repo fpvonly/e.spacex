@@ -37,7 +37,7 @@
     "dev": "cross-env NODE_ENV=development webpack-dev-server",
     "devbackend": "cross-env NODE_ENV=development nodemon server.js",
     "prodbuild": "cross-env NODE_ENV=production webpack",
-    "prodbackend": "forever start server.js",
+    "prodbackend": "forever start server.js"
   },
   "author": "Ari Petäjäjärvi",
   "license": "MIT",

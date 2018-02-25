@@ -220,9 +220,8 @@ class Game extends React.Component {
     let done = false;
     let autoShoot = false;
     if (this.context) {
-      // Background scroll
       this.clearCanvas();
-
+      // Background scroll
       if (this.scrollBackgroundEnabled === true) {
         this.drawBgScroll();
       }
