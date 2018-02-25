@@ -4,11 +4,18 @@ class Sound {
   static explosionSounds = [];
   static music = [];
 
+  static musicLoaded = false;
+  static blastsLoaded = [];
+  static gunBlastsLoaded = [];
+
   static initializeStaticClass() {
 
     // player's ship gun sounds
-    for (let i = 0; i< 60; i++) { // some extra sound objects to create buffer for quick events that require sounds at 60fps
+    for (let i = 0; i < 50; i++) { // some extra sound objects to create buffer for quick events that require sounds at 60fps
       let gunBlast = new Audio("assets/sounds/aaj_0022_Lazer_Gun_02_SFX.mp3");
+      gunBlast.oncanplaythrough = () => {
+        Sound.gunBlastsLoaded.push(true);
+      };
       gunBlast.volume = 0.2;
       gunBlast.preload = 'auto';
       gunBlast.addEventListener("ended", function() {
@@ -18,8 +25,11 @@ class Sound {
     }
 
     // explosion sounds
-    for (let i = 0; i < 60; i++) { // some extra sound objects to create buffer for quick events that require sounds at 60fps
+    for (let i = 0; i < 30; i++) { // some extra sound objects to create buffer for quick events that require sounds at 60fps
       let blast = new Audio("assets/sounds/cc0_explosion_large_gas_001.mp3");
+      blast.oncanplaythrough = () => {
+        Sound.blastsLoaded.push(true);
+      };
       blast.volume = 0.2;
       blast.preload = 'auto';
       blast.addEventListener("ended", function() {
@@ -30,8 +40,15 @@ class Sound {
 
     // game music
     Sound.music = new Audio('assets/sounds/slackbaba_drink_more_tea.mp3');
+    Sound.music.oncanplaythrough = () => {
+      Sound.musicLoaded = true;
+    };
     Sound.music.loop = true;
     Sound.music.volume = 0.3;
+  }
+
+  static soundsLoaded = () => {
+    return (Sound.musicLoaded === true && Sound.blastsLoaded.length === 30 && Sound.gunBlastsLoaded.length === 50);
   }
 
   static playPlayerShipBulletSound = () => {
@@ -42,7 +59,9 @@ class Sound {
         break;
       }
     }
-    playSound.play();
+    if (playSound !== null) {
+      playSound.play();
+    }
   }
 
   static playExplosionSound = () => {
@@ -53,7 +72,9 @@ class Sound {
         break;
       }
     }
-    playSound.play();
+    if (playSound !== null) {
+      playSound.play();
+    }
   }
 
   static playMusic = () => {

@@ -50,6 +50,34 @@ class Sprite {
 
   }
 
+  static spritesLoaded = () => {
+    let loaded = true;
+
+    for (let img of Sprite.explosionSpriteAnimFrames) {
+      if (img.complete === false) {
+        loaded = false;
+      }
+    }
+    for (let type in Sprite.enemySprites){
+      if (Sprite.enemySprites[type].complete === false) {
+        loaded = false;
+      }
+    }
+    for (let type in Sprite.bulletSprites){
+      if (Sprite.bulletSprites[type].complete === false) {
+        loaded = false;
+      }
+    }
+    if (Sprite.playerShipSprite.complete === false) {
+      loaded = false;
+    }
+    if (Sprite.gameBg.complete === false) {
+      loaded = false;
+    }
+
+    return loaded;
+  }
+
   static getExplosionSpriteAnimFrames = () => {
     return Sprite.explosionSpriteAnimFrames.slice(); // needs to return a copy of the array!
   }

@@ -6,7 +6,7 @@ class Explosion extends GameObject {
 
   constructor(context, canvas, x, y) {
     // context, canvas, width, height, x, y
-    super(context, canvas, 40 * window.WINDOW_HEIGHT_ADJUST, 40 * window.WINDOW_HEIGHT_ADJUST, x, y);
+    super(context, canvas, 40 * window.CANVAS_HEIGHT_ADJUST, 40 * window.CANVAS_HEIGHT_ADJUST, x, y);
 
     this.then = Date.now(); // previous explosion time frame, for throttling the animation
     this.explosionFPS = 12;

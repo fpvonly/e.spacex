@@ -12,18 +12,18 @@ class Enemy extends GameObject {
     let width =  0;
     let height = 0;
     if (type === C.ROTATING_UFO) {
-      height = (canvas.height/10 < 512 ? canvas.height/10 : 512);
+      height = 115 * window.CANVAS_HEIGHT_ADJUST;
       width = height;
     } else if (type === C.BLUE_UFO) {
-      height = (canvas.height/10 < 198 ? canvas.height/10 : 198);
+      height = 105 * window.CANVAS_HEIGHT_ADJUST;
       width = height;
     } else if (type === C.ASTEROID) {
       ratio = 320/240; // width/height
-      height = (canvas.height/10 < 240 ? canvas.height/10 : 240);
+      height = 100 * window.CANVAS_HEIGHT_ADJUST;
       width = height * ratio;
     }
     let randomX = Math.floor(Math.random() * (canvas.width - width));
-    let randomY = Math.floor(Math.random() * (canvas.height - height));
+    let randomY = 200 + Math.floor(Math.random() * (canvas.height));
     randomY = -Math.abs(randomY)
 
     // context, canvas, width, height, x, y, speed, rotation speed
@@ -41,7 +41,7 @@ class Enemy extends GameObject {
       this.shooting = false;
     }
     this.bullets = [];
-    this.active = true; // i.e. is between the top and the bottom of the window
+    this.active = true; // i.e. has not gone past the bottom of the canvas
     this.destroyed = false; // has not collided with player ship or player bullet
     this.wasDestroyedInYCoord = -1; // the y-coordinate at the moment of destruction
     this.wasDestroyedInXCoord = 0; // the x-coordinate where to draw the explosion, left or right side of the enemy ship
@@ -83,7 +83,7 @@ class Enemy extends GameObject {
 
   draw = () => {
     if (this.active === true) {
-      if (this.y < this.canvas.height + this.height/2) {
+      if (this.y < this.canvas.height) {
         this.moveDown(this.speed);
         if (this.type === C.ASTEROID) {
           this.moveLeft(this.speed/2);
@@ -103,7 +103,11 @@ class Enemy extends GameObject {
       }
 
       if (this.destroyed === true) {
-        this.explosion.moveToX(this.wasDestroyedInXCoord); // this coord remains the same until the end of explosion
+        if (this.type === C.ASTEROID) {
+            this.explosion.moveToX(this.x);
+        } else {
+          this.explosion.moveToX(this.wasDestroyedInXCoord); // this coord remains the same until the end of explosion
+        }
         this.explosion.moveToY(this.y + this.height/2);
         this.explosion.draw();
       }

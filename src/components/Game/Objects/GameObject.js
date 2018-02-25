@@ -13,29 +13,22 @@ class GameObject {
     this.speed = speed;
     this.rotateDegress = 0;
     this.rotateSpeed = rotateSpeed;
-
-    if ("ontouchstart" in document.documentElement) {
-      this.width *= 2;
-      this.height *= 2;
-      this.y = (y === null ? canvas.height - height*2 : y);
-      this.yOriginal = this.y;
-    }
   }
 
   moveRight = (amount = 1) => {
-    this.x += amount * window.WINDOW_HEIGHT_ADJUST * window.GAME_FPS_ADJUST;
+    this.x += amount * window.CANVAS_HEIGHT_ADJUST * window.GAME_FPS_ADJUST;
   }
 
   moveLeft = (amount = 1) => {
-    this.x -= amount * window.WINDOW_HEIGHT_ADJUST * window.GAME_FPS_ADJUST;
+    this.x -= amount * window.CANVAS_HEIGHT_ADJUST * window.GAME_FPS_ADJUST;
   }
 
   moveUp = (amount = 1) => {
-    this.y -= amount * window.WINDOW_HEIGHT_ADJUST * window.GAME_FPS_ADJUST;
+    this.y -= amount * window.CANVAS_HEIGHT_ADJUST * window.GAME_FPS_ADJUST;
   }
 
   moveDown = (amount = 1) => {
-    this.y += amount * window.WINDOW_HEIGHT_ADJUST * window.GAME_FPS_ADJUST;
+    this.y += amount * window.CANVAS_HEIGHT_ADJUST * window.GAME_FPS_ADJUST;
   }
 
   moveToX = (x = this.xOriginal) => {
@@ -63,8 +56,37 @@ class GameObject {
     if (this.rotateDegress >= 360) {
       this.rotateDegress = 0;
     }
-    this.rotateDegress += (degrees * window.WINDOW_HEIGHT_ADJUST * window.GAME_FPS_ADJUST);
+    this.rotateDegress += (degrees * window.CANVAS_HEIGHT_ADJUST * window.GAME_FPS_ADJUST);
     return this.rotateDegress;
+  }
+
+  isOnScreenBetweenTopAndBottom = () => {
+    if (this.y + this.height > 0 && this.y < this.canvas.height) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  overlapsWithXSpanOf = (target, source) => {
+    let hit = false;
+    if (typeof source === 'undefined') {
+      source = this;
+    }
+
+    if (source.x > target.x && source.x < target.x + target.width) {
+        hit = true;
+    }
+    // detect if source's RIGHT side overlaps with target object
+    if (source.x + source.width > target.x && source.x + source.width < target.x + target.width) {
+        hit = true;
+    }
+    // detect if source's LEFT side overlaps with target object
+    if (source.x < target.x + target.width && source.x + source.width > target.x + target.width) {
+      hit = true;
+    }
+
+    return hit;
   }
 
   didCollideWith = (target, source) => {

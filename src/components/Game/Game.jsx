@@ -9,7 +9,7 @@ import Enemy from './Objects/Enemy';
 import * as C from './Constants';
 
 window.GAME_FPS_ADJUST = 1;
-window.WINDOW_HEIGHT_ADJUST = 1;
+window.CANVAS_HEIGHT_ADJUST = 1;
 
 const DEBUG = (process.env.NODE_ENV === 'development' ? true : false);
 
@@ -24,19 +24,24 @@ class Game extends React.Component {
 
     this.GAME_OVER = false;
     this.animation = null; // the requested animation frame
+    this.scrollBackgroundEnabled = this.getIsBGScrollActiveFromStorage();
     this.scrollBackground = Sprites.getGameBg();
     this.scrollSpeed = 1;
     this.scrollY = 0;
     this.scrollX = 0;
     this.ship = null;
     this.enemies = [];
-    this.allowEnemiesToAttack = false;
     this.points = 0;
 
     this.fps = 0;
     this.previousFrameTime = 0;
     this.framesThisSecond = 0;
     this.lastFpsUpdate = 0;
+
+    this.touchControls = false;
+    if ("ontouchstart" in document.documentElement) {
+      this.touchControls = true;
+    }
   }
 
   static defaultProps = {
@@ -102,6 +107,14 @@ class Game extends React.Component {
     this.debugFPSREF = c;
   }
 
+  getIsBGScrollActiveFromStorage = () => {
+    let value = null;
+    if (window.localStorage) {
+      value = localStorage.getItem('scrollBg');
+    }
+    return (value && value !== null ? (value == 'true') : true);
+  }
+
   handleDocumentVisibilityChange = () => {
     if (document.hidden === true) {
       this.resetGame();
@@ -116,11 +129,11 @@ class Game extends React.Component {
     this.props.setGameState(C.STOP);
   }
 
-  adjustGameSpeedBasedOnWindowHeight = () => {
-    if (window.innerHeight < 1000) {
-      window.WINDOW_HEIGHT_ADJUST = window.innerHeight/1000;
+  adjustGameSpeedBasedOnCanvasHeight = () => {
+    if (this.canvas.height < 1000) {
+      window.CANVAS_HEIGHT_ADJUST = this.canvas.height/1000;
     } else {
-      window.WINDOW_HEIGHT_ADJUST = 1;
+      window.CANVAS_HEIGHT_ADJUST = 1;
     }
   }
 
@@ -140,7 +153,8 @@ class Game extends React.Component {
     this.context = this.canvas.getContext('2d');
     this.clearCanvas();
     cancelAnimRequestFrame(this.animation);
-    this.adjustGameSpeedBasedOnWindowHeight();
+    this.adjustGameSpeedBasedOnCanvasHeight();
+    this.scrollBackgroundEnabled = this.getIsBGScrollActiveFromStorage();
     window.removeEventListener('mousedown', this.endGame, false);
 
     // game base variables and objects ->
@@ -186,10 +200,6 @@ class Game extends React.Component {
 
   animate = (time) => {
     if (time > this.lastFpsUpdate + 1000) { // update fps every second
-      // after one second frame rate has been adjusted and allow enmies to be drawn
-      if (this.lastFpsUpdate > 0) {
-        this.allowEnemiesToAttack = true;
-      }
       this.fps = this.framesThisSecond;
       this.lastFpsUpdate = time;
       this.framesThisSecond = 0;
@@ -208,45 +218,61 @@ class Game extends React.Component {
 
   drawFrame = () => {
     let done = false;
+    let autoShoot = false;
     if (this.context) {
       // Background scroll
       this.clearCanvas();
-      this.drawBgScroll();
+
+      if (this.scrollBackgroundEnabled === true) {
+        this.drawBgScroll();
+      }
 
       if (this.GAME_OVER === false) {
         // The player ship
         done = this.ship.draw();
         let shipBullets = this.ship.getActiveBullets();
 
-        if (this.allowEnemiesToAttack === true) {
-          // Enemies and hits
-          for (let enemy of this.enemies) {
-            done = enemy.draw();
-            if(enemy.destroyed === false && enemy.active === true) {
-              // did player's ship bullets hit the enemy?
-              for (let playerBullet of shipBullets) {
-                if(playerBullet.active === true && playerBullet.didCollideWith(enemy) === true) {
-                    enemy.destroy();
-                    playerBullet.active = false; // bullet is used now
-                    this.points++;
-                    break;
-                }
-              }
-              // did enemy ship's bullets the player's ship?
-              let enemyBullets = enemy.getActiveBullets();
-              for (let enemyBullet of enemyBullets) {
-                if(enemyBullet.active === true && enemyBullet.didCollideWith(this.ship) === true) {
-                  enemyBullet.active = false; // bullet is used now
-                  this.ship.destroy();
+        // Enemies and hits
+        for (let enemy of this.enemies) {
+          done = enemy.draw();
+          if(enemy.destroyed === false && enemy.active === true) {
+            // did player's ship bullets hit the enemy?
+            for (let playerBullet of shipBullets) {
+              if(playerBullet.active === true && playerBullet.didCollideWith(enemy) === true) {
+                  enemy.destroy();
+                  playerBullet.active = false; // bullet is used now
+                  this.points++;
                   break;
-                }
-              }
-              // did player's ship and an enemy ship collide?
-              if(this.ship.didCollideWith(enemy) === true) {
-                this.ship.destroy();
               }
             }
-          } // ends enemies for loop
+            // did enemy ship's bullets the player's ship?
+            let enemyBullets = enemy.getActiveBullets();
+            for (let enemyBullet of enemyBullets) {
+              if(enemyBullet.active === true && enemyBullet.didCollideWith(this.ship) === true) {
+                enemyBullet.active = false; // bullet is used now
+                this.ship.destroy();
+                break;
+              }
+            }
+            // did player's ship and an enemy ship collide?
+            if(this.ship.didCollideWith(enemy) === true) {
+              this.ship.destroy();
+            }
+
+            // if a touch device, shoot automatically when target locked
+            if (this.touchControls === true) {
+              if(this.ship.destroyed === false && this.ship.overlapsWithXSpanOf(enemy) === true && enemy.isOnScreenBetweenTopAndBottom() === true) {
+                autoShoot = true;
+              }
+            }
+          }
+        } // ends enemies for loop
+
+        // if a touch device, shoot automatically when target locked
+        if (this.touchControls === true && autoShoot === true) {
+          this.ship.handleTouchShoot(true);
+        } else if (this.touchControls === true) {
+          this.ship.handleTouchShoot(false);
         }
       }
 
@@ -257,7 +283,7 @@ class Game extends React.Component {
   }
 
   drawBgScroll = () =>{
-		this.scrollY += this.scrollSpeed * window.WINDOW_HEIGHT_ADJUST; // no fps adjust for bg scroll as it's too noticeable
+		this.scrollY += this.scrollSpeed * window.CANVAS_HEIGHT_ADJUST; // no fps adjust for bg scroll as it's too noticeable
 		this.context.drawImage(this.scrollBackground, this.scrollX, this.scrollY, this.canvas.width, this.canvas.height);
 		this.context.drawImage(this.scrollBackground, this.scrollX, this.scrollY - this.canvas.height, this.canvas.width, this.canvas.height);
 		if (this.scrollY >= this.canvas.height) {
@@ -272,7 +298,7 @@ class Game extends React.Component {
   }
 
   render() {
-    return <div>
+    return <div className='game'>
       <div className={'bg ' + this.props.selectedBgClass.split('.')[0]} />
       <canvas
         ref={this.getCanvasRef}

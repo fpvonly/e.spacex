@@ -8,12 +8,12 @@ class Ship extends GameObject {
 
   constructor(context, canvas) {
 
-    let ratio = 287/151; // height/width ratio for image
-    let width = (canvas.height/10 < 287 ? canvas.height/10 : 287);
-    let height = width * ratio;
+    let ratio = 151/287; // width/height ratio for image
+    let height = 150 * window.CANVAS_HEIGHT_ADJUST;
+    let width = height * ratio;
 
     // context, canvas, width, height
-    super(context, canvas, width*0.8, height*0.8); // 0.8 is scaled down
+    super(context, canvas, width, height);
 
     this.shipBg = Sprites.getPlayerShipSprite();
     this.explosions = [
@@ -58,7 +58,6 @@ class Ship extends GameObject {
       window.addEventListener('mousedown', this.handleMouseDown, false);
       window.addEventListener('mouseup', this.handleMouseUp, false);
     } else {
-//TODO
       this.canvas.addEventListener('touchmove', this.handleTouchMove, false);
       this.canvas.addEventListener('touchend', this.handleTouchEnd, false);
     }
@@ -104,7 +103,7 @@ class Ship extends GameObject {
           case 'X_COORD': // for mouse and touch events
             if (this.steerProxy.X_COORD <= this.canvas.width - this.width) {
               this.resetY(); // reset y to original initial value
-              this.moveToX(this.steerProxy.X_COORD);
+              this.moveToX(this.steerProxy.X_COORD - this.width/2);
             }
             break;
           case 'SHOOT':
@@ -114,6 +113,14 @@ class Ship extends GameObject {
       }
     }
     return true;
+  }
+
+  handleTouchShoot = (shoot = false) => {
+    if (shoot === true) {
+      this.steerProxy['SHOOT'] = true; // simulate keyboard shoot event
+    } else {
+      Reflect.deleteProperty(this.steerProxy, 'SHOOT');
+    }
   }
 
   addActiveDownKeys = (e) => {

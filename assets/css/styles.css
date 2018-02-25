@@ -88,7 +88,20 @@ canvas {
   position: absolute;
 }
 
-.bg {
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  font-size: 12px; /* must be fixed */
+  background: url('../images/space2.jpg');
+}
+
+.loading img {
+  margin: auto auto;
+}
+
+.game .bg {
   background: url('../images/space2.jpg');
   width: 100%;
   height: 100%;
@@ -96,11 +109,11 @@ canvas {
   background-size: cover;
 }
 
-.bg.space1 {
+.game .bg.space1, .loading.space1 {
   background: url('../images/space1.jpg') !important;
 }
 
-.bg.space2 {
+.game .bg.space2, .loading.space2 {
   background: url('../images/space2.jpg') !important;
 }
 
@@ -154,6 +167,11 @@ canvas {
   100% { box-shadow: 0.3rem 0.3rem 5rem rgba(255,255,255,1); }
 }
 
+.main_menu_wrapper {
+  position: fixed;
+  z-index: 9999;
+}
+
 .menu {
   background: rgba(255,255,255,1);
   position: fixed;
@@ -166,6 +184,24 @@ canvas {
   animation-name: menu_anim;
   animation-duration: 3s;
   animation-iteration-count: infinite;
+}
+
+@media screen and (max-width: 1280px) {
+  .menu {
+    height: 6.1vw;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .menu {
+    height: 6.3vw;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .menu {
+    height: 6.6vw;
+  }
 }
 
 @keyframes menu_anim {
@@ -277,16 +313,21 @@ canvas {
 .extra_sub_menu {
   left: 0;
   width: 100%;
-  height: 35%;
+  height: 30%;
   background: transparent;
-  position: absolute;
+  position: fixed;
   bottom: 0;
 }
 
 .extra_sub_menu .padding {
   height: 95%;
-  width: 95%;
-  padding: 2.5%;
+  padding: 2.5% 7% 2.5% 2.5%;
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-content: flex-start;
+  justify-content: flex-start;
 }
 
 .extra_sub_menu .bg {
@@ -312,56 +353,135 @@ canvas {
   color: #290469;
 }
 
-.extra_sub_menu .bg_selection_title {
+.extra_sub_menu .extra_bg_options, .extra_sub_menu .extra_performance_options {
+  flex: 2;
+  height: 70%;
+  padding: 0 0.5vw;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  justify-content: flex-start;
+}
+
+.extra_sub_menu .extra_bg_options .bg_selection_title {
   padding-bottom: 0.5vw;
   display: inline-block;
   border-bottom: 1px solid #fff;
   margin-bottom: 0.8vw;
   color: #fff;
   font-size: 1.5vw;
-  width: 40%;
+  width: 100%;
+  order: 1;
+  flex-grow: 3;
 }
 
-.extra_bg_options {
-  width: 40%;
-  position: absolute;
-  height: 70%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-content: flex-start;
-  justify-content: flex-start;
-}
-
-.extra_bg_options .bg_option {
+.extra_sub_menu .extra_bg_options .bg_option {
   margin: 0 auto;
   flex-grow: 1;
   padding: 0 10% 0 0;
+  width: 15%;
 }
 
-.extra_bg_options .bg_option.selected img {
+.extra_sub_menu .extra_bg_options .bg_option.selected img {
   border: 0.3vw solid #ffffff;
 }
 
-.extra_bg_options .default_bg {
-  order: 1;
+.extra_sub_menu .extra_bg_options .default_bg {
+  order: 2;
 }
 
-.extra_bg_options .extra_bg {
-  order: 1;
+.extra_sub_menu .extra_bg_options .extra_bg {
+  order: 3;
 }
 
-.extra_bg_options .default_bg img, .extra_bg_options .extra_bg img {
+.extra_sub_menu .extra_bg_options .default_bg img, .extra_sub_menu .extra_bg_options .extra_bg img {
   border-radius: 1.5vw;
   border: 0.3vw solid #545454;
   position: initial;
 }
 
-.extra_bg_options .default_bg:hover img, .extra_bg_options .extra_bg:hover img {
+.extra_sub_menu .extra_bg_options .default_bg:hover img, .extra_sub_menu .extra_bg_options .extra_bg:hover img {
   cursor: pointer;
   border: 0.3vw solid #ffffff;
 }
 
+.extra_sub_menu .extra_performance_options .performance_selection_title {
+  padding-bottom: 0.5vw;
+  display: inline-block;
+  border-bottom: 1px solid #fff;
+  margin-bottom: 0.8vw;
+  color: #fff;
+  font-size: 1.5vw;
+  width: 100%;
+  order: 1;
+  flex-grow: 3;
+}
+
+.extra_sub_menu .extra_performance_options {
+  flex: 1;
+}
+
+.extra_sub_menu .extra_performance_options .toggle_wrapper {
+  order: 2;
+  padding-top: 0.5vw;
+  display: flex;
+}
+
+.extra_sub_menu .bg_scroll_toggle_label {
+  color: #fff;
+  display: inline-block;
+  text-align: center;
+  font-size: 0.7vw;
+  padding-left: 0.5vw;
+  margin: auto auto;
+}
+
+@media screen and (max-width: 700px) {
+  .extra_sub_menu .bg_scroll_toggle_label {
+    font-size: 7px;
+  }
+}
+
+.extra_sub_menu .extra_info {
+  flex: 2;
+}
+
+.extra_sub_menu .extra_info .info_selection_title {
+  padding-bottom: 0.5vw;
+  display: inline-block;
+  border-bottom: 1px solid #fff;
+  margin-bottom: 0.8vw;
+  color: #fff;
+  font-size: 1.5vw;
+  width: 100%;
+  order: 1;
+  flex-grow: 3;
+}
+
+.extra_sub_menu .extra_info p {
+  color: #fff;
+  font-size: 0.8vw;
+}
+
+@media screen and (max-width: 800px) {
+  .extra_sub_menu .extra_info p {
+    font-size: 7px; /* must be fixed */
+  }
+}
+
+.extra_sub_menu .extra_info a {
+  color: #000;
+  display: block;
+  padding: 1vw 1vw 1vw 0;
+  font-size: 1vw;
+}
+
+.extra_sub_menu .extra_info a:hover {
+  color: #545454;
+}
+
+/* extra sub menu anim */
 .slide-enter { bottom: -35%; }
 .extra_sub_menu.slide-enter.slide-enter-active {
   bottom: 0;
@@ -376,7 +496,151 @@ canvas {
 }
 
 
-/* Debugging related */
+/* react-toggle npm-module css */
+
+.react-toggle {
+  touch-action: pan-x;
+
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  background-color: transparent;
+  border: 0;
+  padding: 0;
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.react-toggle-screenreader-only {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+.react-toggle--disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  -webkit-transition: opacity 0.25s;
+  transition: opacity 0.25s;
+}
+
+.react-toggle-track {
+  width: 50px;
+  height: 24px;
+  padding: 0;
+  border-radius: 30px;
+  background-color: #4D4D4D;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+}
+
+.react-toggle:hover:not(.react-toggle--disabled) .react-toggle-track {
+  background-color: #000000;
+}
+
+.react-toggle--checked .react-toggle-track {
+  background-color: #19AB27;
+}
+
+.react-toggle--checked:hover:not(.react-toggle--disabled) .react-toggle-track {
+  background-color: #128D15;
+}
+
+.react-toggle-track-check {
+  position: absolute;
+  width: 14px;
+  height: 10px;
+  top: 0px;
+  bottom: 0px;
+  margin-top: auto;
+  margin-bottom: auto;
+  line-height: 0;
+  left: 8px;
+  opacity: 0;
+  -webkit-transition: opacity 0.25s ease;
+  -moz-transition: opacity 0.25s ease;
+  transition: opacity 0.25s ease;
+}
+
+.react-toggle--checked .react-toggle-track-check {
+  opacity: 1;
+  -webkit-transition: opacity 0.25s ease;
+  -moz-transition: opacity 0.25s ease;
+  transition: opacity 0.25s ease;
+}
+
+.react-toggle-track-x {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  top: 0px;
+  bottom: 0px;
+  margin-top: auto;
+  margin-bottom: auto;
+  line-height: 0;
+  right: 10px;
+  opacity: 1;
+  -webkit-transition: opacity 0.25s ease;
+  -moz-transition: opacity 0.25s ease;
+  transition: opacity 0.25s ease;
+}
+
+.react-toggle--checked .react-toggle-track-x {
+  opacity: 0;
+}
+
+.react-toggle-thumb {
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 22px;
+  height: 22px;
+  border: 1px solid #4D4D4D;
+  border-radius: 50%;
+  background-color: #FAFAFA;
+
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+
+  -webkit-transition: all 0.25s ease;
+  -moz-transition: all 0.25s ease;
+  transition: all 0.25s ease;
+}
+
+.react-toggle--checked .react-toggle-thumb {
+  left: 27px;
+  border-color: #19AB27;
+}
+
+.react-toggle--focus .react-toggle-thumb {
+  -webkit-box-shadow: 0px 0px 3px 2px #0099E0;
+  -moz-box-shadow: 0px 0px 3px 2px #0099E0;
+  box-shadow: 0px 0px 2px 3px #0099E0;
+}
+
+.react-toggle:active:not(.react-toggle--disabled) .react-toggle-thumb {
+  -webkit-box-shadow: 0px 0px 5px 5px #0099E0;
+  -moz-box-shadow: 0px 0px 5px 5px #0099E0;
+  box-shadow: 0px 0px 5px 5px #0099E0;
+}
+
+/* GAME Debugging related */
 
 .debugFPS {
   position: absolute;
