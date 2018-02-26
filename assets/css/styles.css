@@ -95,9 +95,17 @@ canvas {
   color: #ffffff;
   font-size: 12px; /* must be fixed */
   background: url('../images/space2.jpg');
+  background-size: cover !important;
 }
 
 .loading .loader {
+  margin: auto auto;
+  position: absolute;
+  display: block;
+}
+
+.loading .loader_text {
+  display: block;
   margin: auto auto;
   position: absolute;
 }
@@ -107,15 +115,17 @@ canvas {
   width: 100%;
   height: 100%;
   position: absolute;
-  background-size: cover;
+  background-size: cover !important;
 }
 
 .game .bg.space1, .loading.space1 {
   background: url('../images/space1.jpg') !important;
+  background-size: cover !important;
 }
 
 .game .bg.space2, .loading.space2 {
   background: url('../images/space2.jpg') !important;
+  background-size: cover !important;
 }
 
 .banner {
@@ -145,21 +155,27 @@ canvas {
 }
 
 .arc {
-  width: 810px;
-  height: 420px;
+  width: 47vw;
+  height: 20vw;
   background: transparent;
   position: fixed;
   transform: rotate(30deg);
   left: 37%;
   top: 11%;
-  border-right: 100px solid #ffff;
-  border-bottom: 100px solid #ffff;
+  border-right: 5vw solid #ffff;
+  border-bottom: 5vw solid #ffff;
   border-radius: 54%;
   z-index: 1;
   opacity: 0.3;
   animation-name: arc_anim;
   animation-duration: 3s;
   animation-iteration-count: infinite;
+}
+
+@media screen and (max-width: 1679px) {
+  .arc {
+    display: none;
+  }
 }
 
 @keyframes arc_anim {
@@ -275,6 +291,24 @@ canvas {
   left: 11.5vw;
 }
 
+@media screen and (min-width: 1921px) {
+  .menu .menu_btn.new_game {
+    top: 0.7vw;
+    left: 29vw;
+  }
+
+  .menu .menu_btn.extra {
+    top: 0.7vw;
+    left: 20.5vw;
+  }
+
+  .menu .menu_btn.quit {
+    top: 0.7vw;
+    left: 11.5vw;
+  }
+}
+
+
 .menu .menu_btn.music {
   right: -25vw;
   top: 50vw;
@@ -315,9 +349,11 @@ canvas {
   left: 0;
   width: 100%;
   height: 30%;
+  min-height: 240px;
   background: transparent;
   position: fixed;
   bottom: 0;
+  z-index: 9999;
 }
 
 .extra_sub_menu .padding {
@@ -336,7 +372,6 @@ canvas {
   height: 100%;
   background: #ffffff;
   position: absolute;
-  opacity: 0.4;
 }
 
 .extra_sub_menu .extra_close_btn {
@@ -345,13 +380,13 @@ canvas {
   right: 1vw;
   top: 1vw;
   font-size: 1.5vw;
-  color: #fff;
+  color: #290469;
   position: absolute;
   cursor: pointer;
 }
 
 .extra_sub_menu .extra_close_btn:hover {
-  color: #290469;
+  color: #775da2;
 }
 
 .extra_sub_menu .extra_bg_options, .extra_sub_menu .extra_performance_options {
@@ -368,9 +403,9 @@ canvas {
 .extra_sub_menu .extra_bg_options .bg_selection_title {
   padding-bottom: 0.5vw;
   display: inline-block;
-  border-bottom: 1px solid #fff;
+  border-bottom: 2px solid #9764b4;
   margin-bottom: 0.8vw;
-  color: #fff;
+  color: #9764b4;
   font-size: 1.5vw;
   width: 100%;
   order: 1;
@@ -381,11 +416,11 @@ canvas {
   margin: 0 auto;
   flex-grow: 1;
   padding: 0 10% 0 0;
-  width: 15%;
+  width: 10vw;
 }
 
 .extra_sub_menu .extra_bg_options .bg_option.selected img {
-  border: 0.3vw solid #ffffff;
+  border: 0.3vw solid #19AB27 !important;
 }
 
 .extra_sub_menu .extra_bg_options .default_bg {
@@ -397,22 +432,23 @@ canvas {
 }
 
 .extra_sub_menu .extra_bg_options .default_bg img, .extra_sub_menu .extra_bg_options .extra_bg img {
+  width: 100%;
   border-radius: 1.5vw;
-  border: 0.3vw solid #545454;
+  border: 0.3vw solid #ffffff;
   position: initial;
 }
 
 .extra_sub_menu .extra_bg_options .default_bg:hover img, .extra_sub_menu .extra_bg_options .extra_bg:hover img {
   cursor: pointer;
-  border: 0.3vw solid #ffffff;
+  border: 0.3vw solid #545454;
 }
 
 .extra_sub_menu .extra_performance_options .performance_selection_title {
   padding-bottom: 0.5vw;
   display: inline-block;
-  border-bottom: 1px solid #fff;
+  border-bottom: 2px solid #9764b4;
   margin-bottom: 0.8vw;
-  color: #fff;
+  color: #9764b4;
   font-size: 1.5vw;
   width: 100%;
   order: 1;
@@ -430,7 +466,7 @@ canvas {
 }
 
 .extra_sub_menu .bg_scroll_toggle_label {
-  color: #fff;
+  color: #9764b4;
   display: inline-block;
   text-align: center;
   font-size: 0.7vw;
@@ -451,9 +487,9 @@ canvas {
 .extra_sub_menu .extra_info .info_selection_title {
   padding-bottom: 0.5vw;
   display: inline-block;
-  border-bottom: 1px solid #fff;
+  border-bottom: 2px solid #9764b4;
   margin-bottom: 0.8vw;
-  color: #fff;
+  color: #9764b4;
   font-size: 1.5vw;
   width: 100%;
   order: 1;
@@ -461,7 +497,7 @@ canvas {
 }
 
 .extra_sub_menu .extra_info p {
-  color: #fff;
+  color: #9764b4;
   font-size: 0.8vw;
 }
 
@@ -497,7 +533,7 @@ canvas {
 }
 
 
-/* Loader incon */
+/* Loader icon */
 
 @keyframes lds-eclipse {
   0% {

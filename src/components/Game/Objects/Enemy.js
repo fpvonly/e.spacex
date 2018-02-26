@@ -14,6 +14,9 @@ class Enemy extends GameObject {
     if (type === C.ROTATING_UFO) {
       height = 115 * window.CANVAS_HEIGHT_ADJUST;
       width = height;
+    } else if (type === C.ROTATING_UFO_2) {
+      height = 64 * window.CANVAS_HEIGHT_ADJUST;
+      width = height;
     } else if (type === C.BLUE_UFO) {
       height = 105 * window.CANVAS_HEIGHT_ADJUST;
       width = height;
@@ -23,7 +26,7 @@ class Enemy extends GameObject {
       width = height * ratio;
     }
     let randomX = Math.floor(Math.random() * (canvas.width - width));
-    let randomY = 200 + Math.floor(Math.random() * (canvas.height));
+    let randomY = canvas.height + Math.floor(Math.random() * (canvas.height));
     randomY = -Math.abs(randomY)
 
     // context, canvas, width, height, x, y, speed, rotation speed
@@ -32,7 +35,7 @@ class Enemy extends GameObject {
     this.type = type;
     this.shooting = true;
     this.enemyBg = Sprites.getEnemySprite(this.type);
-    if (this.type === C.ROTATING_UFO) {
+    if (this.type === C.ROTATING_UFO || this.type === C.ROTATING_UFO_2) {
       this.rotating = true;
     } else if (this.type === C.BLUE_UFO) {
       this.rotating = false;
@@ -66,7 +69,7 @@ class Enemy extends GameObject {
     let bulletX = this.x;
     let bulletY = this.y;
     let newBullets = [];
-    for (let i = 0; i < (this.type === C.ROTATING_UFO ? 2 : 3); i++) {
+    for (let i = 0; i < (this.type === C.ROTATING_UFO ? 2 : (this.type === C.ROTATING_UFO_2 ? 1 : 3)); i++) {
       newBullets.push(
         new Bullet(
           this.context,

@@ -21,4 +21,5 @@ export const NUMBER_OF_ENEMIES = 11;
 export const ASTEROID = 'asteroid';
 export const BLUE_UFO = 'blueUFO';
 export const ROTATING_UFO = 'rotatingUFO';
+export const ROTATING_UFO_2 = 'rotatingUFO2';
 export const PLAYER_SHIP = 'playerShip';

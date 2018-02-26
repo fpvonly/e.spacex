@@ -180,10 +180,9 @@ class Menu extends React.Component {
       <span className='info_selection_title'>Info:</span>
       <div>
         <p>
-          e.spaceX is a 2D space shooter that was coded from scratch using React framework as a base for the app and HTML5 Canvas API for the game itself.
-          Game code was bundled with Webpack for the use of npm-modules and es6+ features. Functionality was only slightly tested as this was a demo project. Should work on newest versions
-          of modern browsers. The game is designed mainly for FullHD resolution but it is responsive. The project utilized free space background
-          and ship graphics and sounds from the web.
+          e.spaceX is a 2D space shooter. It uses React framework as a base for the app and HTML5 Canvas API for the game itself.
+          The game is designed for FullHD-resolution and desktop browsers but it is still responsive for adjusting the game area size.
+          The game should work on the newest desktop versions of the modern browsers of major vendors. See more info and project code on GitHub:
         </p>
           <a href={conf.git_url} target='_blank'>Link to GitHub</a>
         <p>

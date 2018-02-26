@@ -21,6 +21,9 @@ class Sprite {
     enemyBg.src = "assets/images/enemy.png";
     Sprite.enemySprites[C.ROTATING_UFO] = enemyBg;
     enemyBg = new Image();
+    enemyBg.src = "assets/images/enemy_3.png";
+    Sprite.enemySprites[C.ROTATING_UFO_2] = enemyBg;
+    enemyBg = new Image();
     enemyBg.src = "assets/images/enemy_2.png";
     Sprite.enemySprites[C.BLUE_UFO] = enemyBg;
     enemyBg = new Image();
@@ -31,6 +34,9 @@ class Sprite {
     let bulletBg = new Image();
     bulletBg.src = "assets/images/bullet_3.png";
     Sprite.bulletSprites[C.ROTATING_UFO] = bulletBg;
+    bulletBg = new Image();
+    bulletBg.src = "assets/images/bullet.png";
+    Sprite.bulletSprites[C.ROTATING_UFO_2] = bulletBg;
     bulletBg = new Image();
     bulletBg.src = "assets/images/bullet.png";
     Sprite.bulletSprites[C.BLUE_UFO] = bulletBg;

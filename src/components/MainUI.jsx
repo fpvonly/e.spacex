@@ -86,8 +86,8 @@ class UI extends React.Component {
   render() {
     return (this.state.isHydrating === true)
               ? <div className={'loading ' + (this.state.selectedBgClass.indexOf('.') !== -1 ? this.state.selectedBgClass.split('.')[0] : '')}>
-                  <div className="loader lds-css ng-scope"><div style={{'width': '100%', 'height': '100%'}} className="lds-eclipse"><div></div></div></div>
-                  Loading game files...
+                  <div className='loader lds-css ng-scope'><div style={{'width': '100%', 'height': '100%'}} className='lds-eclipse'><div></div></div></div>
+                  <div className='loader_text'>Loading game files...</div>
                 </div>
               : <div>
                   <Game

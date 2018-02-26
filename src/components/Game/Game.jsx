@@ -132,8 +132,10 @@ class Game extends React.Component {
   adjustGameSpeedBasedOnCanvasHeight = () => {
     if (this.canvas.height < 1000) {
       window.CANVAS_HEIGHT_ADJUST = this.canvas.height/1000;
+    } else if (this.canvas.height > 1080) {
+      window.CANVAS_HEIGHT_ADJUST = this.canvas.height/1080;
     } else {
-      window.CANVAS_HEIGHT_ADJUST = 1;
+      window.CANVAS_HEIGHT_ADJUST = 1; // for heights 1000px -> 1980px
     }
   }
 
@@ -170,6 +172,8 @@ class Game extends React.Component {
       let type = (i%3 === 0) ? C.ROTATING_UFO : C.BLUE_UFO;
       if (i === C.NUMBER_OF_ENEMIES - 1) {
         this.enemies.push(new Enemy(this.context, this.canvas, C.ASTEROID));
+      } else if (i === 7) {
+        this.enemies.push(new Enemy(this.context, this.canvas, C.ROTATING_UFO_2));        
       } else {
         this.enemies.push(new Enemy(this.context, this.canvas, type));
       }
@@ -203,7 +207,7 @@ class Game extends React.Component {
       this.fps = this.framesThisSecond;
       this.lastFpsUpdate = time;
       this.framesThisSecond = 0;
-      if (this.fps > 20) {
+      if (this.fps > 1) {
         window.GAME_FPS_ADJUST = 60/(this.fps > 60 ? 60 : this.fps);
       }
     }
