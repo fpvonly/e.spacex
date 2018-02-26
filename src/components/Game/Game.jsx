@@ -208,8 +208,8 @@ class Game extends React.Component {
   animate = (time) => {
     if (time > this.lastFpsUpdate + 1000) { // update fps every second
       this.fps = this.framesThisSecond;
-      this.lastFpsUpdate = time;      
-      if (this.fps > 1 && this.framesThisSecond > 0) { // check for both variable to prevent "speed ups" after window resize
+      this.lastFpsUpdate = time;
+      if (this.fps > 15 && this.framesThisSecond > 0) { // check for both variable to prevent "speed ups" after window resize
         window.GAME_FPS_ADJUST = 60/(this.fps > 60 ? 60 : this.fps);
       }
       this.framesThisSecond = 0;
