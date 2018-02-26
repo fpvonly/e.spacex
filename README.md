@@ -22,8 +22,8 @@ Controls:
 - shoot: left mouse button
 
 3. touch
-- steer: by holding down finger on player's hip and moving it left or right
-- shoot: automatic shooting when enemy is in target
+- steer: by holding down finger on player's ship and moving it left or right
+- shoot: automatic shooting when enemy is on target
 
 ####MIT License
 Copyright (c) 2018 Ari Petäjäjärvi
