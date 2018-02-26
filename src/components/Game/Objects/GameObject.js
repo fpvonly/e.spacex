@@ -4,7 +4,7 @@ class GameObject {
     this.context = context;
     this.canvas = canvas;
 
-    this.x = (x === null ? (canvas.width/2) - (width/2) : x);
+    this.x = (x === null ? canvas.width/2 - width/2 : x);
     this.y = (y === null ? canvas.height - height : y);
     this.xOriginal = this.x;
     this.yOriginal = this.y;

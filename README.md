@@ -11,5 +11,19 @@ but as it's a very resource intensive game, its mobile performance will probably
 The game should work on the newest versions of the modern browsers of major vendors (Chrome, Opera, Firefox, Edge, etc). The project utilized space background
 and ship graphics and sounds from the web.
 
+Controls:
+
+1. Keyboard keys
+- steer: 'arrow left', 'arrow up', 'arrow right', 'arrow down'
+- shoot: 'control' (ctrl)
+
+2. Mouse
+- steer: by moving the mouse left or right
+- shoot: left mouse button
+
+3. touch
+- steer: by holding down finger on player's hip and moving it left or right
+- shoot: automatic shooting when enemy is in target
+
 ####MIT License
 Copyright (c) 2018 Ari Petäjäjärvi

@@ -135,7 +135,7 @@ class Game extends React.Component {
     } else if (this.canvas.height > 1080) {
       window.CANVAS_HEIGHT_ADJUST = this.canvas.height/1080;
     } else {
-      window.CANVAS_HEIGHT_ADJUST = 1; // for heights 1000px -> 1980px
+      window.CANVAS_HEIGHT_ADJUST = 1; // for heights 1000px -> 1080px
     }
   }
 
@@ -161,6 +161,9 @@ class Game extends React.Component {
 
     // game base variables and objects ->
     window.GAME_FPS_ADJUST = 1;
+    this.fps = 0; // reset previous value as it might be wrong after window resize
+    this.lastFpsUpdate = 0; // reset
+    this.fps = this.framesThisSecond; // reset
     this.GAME_OVER = false;
     this.scrollY = 0;
     this.scrollX = 0;
@@ -173,7 +176,7 @@ class Game extends React.Component {
       if (i === C.NUMBER_OF_ENEMIES - 1) {
         this.enemies.push(new Enemy(this.context, this.canvas, C.ASTEROID));
       } else if (i === 7) {
-        this.enemies.push(new Enemy(this.context, this.canvas, C.ROTATING_UFO_2));        
+        this.enemies.push(new Enemy(this.context, this.canvas, C.ROTATING_UFO_2));
       } else {
         this.enemies.push(new Enemy(this.context, this.canvas, type));
       }
@@ -205,11 +208,11 @@ class Game extends React.Component {
   animate = (time) => {
     if (time > this.lastFpsUpdate + 1000) { // update fps every second
       this.fps = this.framesThisSecond;
-      this.lastFpsUpdate = time;
-      this.framesThisSecond = 0;
-      if (this.fps > 1) {
+      this.lastFpsUpdate = time;      
+      if (this.fps > 1 && this.framesThisSecond > 0) { // check for both variable to prevent "speed ups" after window resize
         window.GAME_FPS_ADJUST = 60/(this.fps > 60 ? 60 : this.fps);
       }
+      this.framesThisSecond = 0;
     }
     this.framesThisSecond++;
     this.animation = requestAnimFrame(this.animate);

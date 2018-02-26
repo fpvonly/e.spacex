@@ -74,8 +74,8 @@ class Enemy extends GameObject {
         new Bullet(
           this.context,
           this.canvas,
-          (bulletX + this.width/2 - 5),
-          bulletY + this.height + ((this.type === C.ROTATING_UFO ? 5 : 15) * i),
+          bulletX + this.width/2,
+          bulletY + this.height + ((this.type === C.ROTATING_UFO ? 5*i : 15*i) * window.CANVAS_HEIGHT_ADJUST),
           5,
           'DOWN',
           this.type)
