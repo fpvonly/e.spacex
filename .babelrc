@@ -4,8 +4,9 @@
       "env",
       {
         "targets": {
-          "ie": 11
-        }
+          "edge": 12
+        },
+        "useBuiltIns": true
       }
     ],
     "react"

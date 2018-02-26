@@ -101,8 +101,8 @@ class Ship extends GameObject {
             }
             break;
           case 'X_COORD': // for mouse and touch events
-            if (this.steerProxy.X_COORD <= this.canvas.width - this.width) {
-              this.resetY(); // reset y to original initial value
+            this.resetY(); // reset y to original initial value
+            if (this.steerProxy.X_COORD > 0 && this.steerProxy.X_COORD <= this.canvas.width) {
               this.moveToX(this.steerProxy.X_COORD - this.width/2);
             }
             break;
@@ -113,14 +113,6 @@ class Ship extends GameObject {
       }
     }
     return true;
-  }
-
-  handleTouchShoot = (shoot = false) => {
-    if (shoot === true) {
-      this.steerProxy['SHOOT'] = true; // simulate keyboard shoot event
-    } else {
-      Reflect.deleteProperty(this.steerProxy, 'SHOOT');
-    }
   }
 
   addActiveDownKeys = (e) => {
@@ -158,6 +150,14 @@ class Ship extends GameObject {
 
   handleTouchEnd = (e) => {
     Reflect.deleteProperty(this.steerProxy, 'X_COORD');
+  }
+
+  handleTouchShoot = (shoot = false) => {
+    if (shoot === true) {
+      this.steerProxy['SHOOT'] = true; // simulate keyboard shoot event
+    } else {
+      Reflect.deleteProperty(this.steerProxy, 'SHOOT');
+    }
   }
 
   draw = () => {

@@ -89,13 +89,32 @@ canvas {
 }
 
 .loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   color: #ffffff;
   font-size: 12px; /* must be fixed */
   background: url('../images/space2.jpg');
   background-size: cover !important;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -moz-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -moz-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .loading .loader {
