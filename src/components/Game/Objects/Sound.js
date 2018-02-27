@@ -40,11 +40,17 @@ class Sound {
 
     // game music
     Sound.music = new Audio('assets/sounds/slackbaba_drink_more_tea.mp3');
-    Sound.music.oncanplaythrough = () => {
+    Sound.music.oncanplay = () => {
       Sound.musicLoaded = true;
     };
     Sound.music.loop = true;
     Sound.music.volume = 0.3;
+
+    Sound.hasBeenInitilialized = true;
+  }
+
+  static getLoadingStatusInfo = () => {
+    return 'Sounds: ' + Math.floor(((((Sound.musicLoaded === true ? 1 : 0) + Sound.blastsLoaded.length + Sound.gunBlastsLoaded.length)/81)*100)) + '%';
   }
 
   static soundsLoaded = () => {

@@ -56,20 +56,54 @@ class Sprite {
 
   }
 
+  static getLoadingStatusInfo = () => {
+    let all = 0;
+    let loaded = 0;
+
+    for (let frame of Sprite.explosionSpriteAnimFrames) {
+      all++;
+      if (frame.complete === true) {
+        loaded++;
+      }
+    }
+    for (let type in Sprite.enemySprites) {
+      all++;
+      if (Sprite.enemySprites[type].complete === true) {
+        loaded++;
+      }
+    }
+    for (let type in Sprite.bulletSprites) {
+      all++;
+      if (Sprite.bulletSprites[type].complete === true) {
+        loaded++;
+      }
+    }
+    if (Sprite.playerShipSprite.complete === true) {
+      all++;
+      loaded++;
+    }
+    if (Sprite.gameBg.complete === true) {
+      all++;
+      loaded++;
+    }
+    
+    return 'Images: ' + Math.floor((loaded/all)*100) + '%';
+  }
+
   static spritesLoaded = () => {
     let loaded = true;
 
-    for (let img of Sprite.explosionSpriteAnimFrames) {
-      if (img.complete === false) {
+    for (let frame of Sprite.explosionSpriteAnimFrames) {
+      if (frame.complete === false) {
         loaded = false;
       }
     }
-    for (let type in Sprite.enemySprites){
+    for (let type in Sprite.enemySprites) {
       if (Sprite.enemySprites[type].complete === false) {
         loaded = false;
       }
     }
-    for (let type in Sprite.bulletSprites){
+    for (let type in Sprite.bulletSprites) {
       if (Sprite.bulletSprites[type].complete === false) {
         loaded = false;
       }

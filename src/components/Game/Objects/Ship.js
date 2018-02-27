@@ -23,7 +23,7 @@ class Ship extends GameObject {
     ];
     this.bullets = [];
     this.then = Date.now(); // previous shoot time frame, for throttling the shooting
-    this.shootFPS = 12; // shoot §approx 12 shots/second at approx 60fps of the game
+    this.shootFPS = 12; // shoot approx 12 shots/second at approx 60fps of the game
     this.destroyed = false;
     this.allowShipMovement = false;
     this.activeKeys = {};
