@@ -46,7 +46,6 @@ class Sound {
     Sound.music.loop = true;
     Sound.music.volume = 0.3;
 
-    Sound.hasBeenInitilialized = true;
   }
 
   static getLoadingStatusInfo = () => {
