@@ -8,8 +8,8 @@ class Ship extends GameObject {
 
   constructor(context, canvas) {
 
-    let ratio = 151/287; // width/height ratio for image
-    let height = 150 * window.CANVAS_HEIGHT_ADJUST;
+    let ratio = 125/306; // width/height ratio for image
+    let height = 150 * window.CANVAS_HEIGHT_ADJUST; // 150px is for 1000px -> 1080px window height
     let width = height * ratio;
 
     // context, canvas, width, height
@@ -23,7 +23,7 @@ class Ship extends GameObject {
     ];
     this.bullets = [];
     this.then = Date.now(); // previous shoot time frame, for throttling the shooting
-    this.shootFPS = 12; // shoot approx 12 shots/second at approx 60fps of the game
+    this.shootFPS = 12; // shoot §approx 12 shots/second at approx 60fps of the game
     this.destroyed = false;
     this.allowShipMovement = false;
     this.activeKeys = {};

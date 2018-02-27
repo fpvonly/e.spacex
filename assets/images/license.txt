@@ -1,7 +1,7 @@
 Under Creative Commons Attribution 4.0 International License.
 From: http://millionthvector.blogspot.fi/p/free-sprites.html
 
-- ship_1.png
+- ship_1 - Copy.png
 - enemy.png
 - enemy_2.png
 - enemy_3.png
