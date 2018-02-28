@@ -36,22 +36,14 @@ class Menu extends React.Component {
     updateBGCallback: PropTypes.func
   };
 
-  componentWillUnmount() {
-    this.extraSubMenu.removeEventListener('mouseleave', this.handleShowExtraClick, false);
-  }
-
   handleNewGameClick = (e) => {
-    this.props.setGameState(C.RUN, 'MENU_NEW_GAME_CLICK');
+    this.setState({extraSubMenuVisible: false}, () => {
+      this.props.setGameState(C.RUN, 'MENU_NEW_GAME_CLICK');
+    });    
   }
 
   handleShowExtraClick = () => {
-    this.setState({extraSubMenuVisible: !this.state.extraSubMenuVisible}, () => {
-      if (this.state.extraSubMenuVisible === true && this.extraSubMenu !== null) {
-        this.extraSubMenu.addEventListener('mouseleave', this.handleShowExtraClick, false);
-      } else if (this.extraSubMenu !== null) {
-        this.extraSubMenu.removeEventListener('mouseleave', this.handleShowExtraClick, false);
-      }
-    });
+    this.setState({extraSubMenuVisible: !this.state.extraSubMenuVisible});
   }
 
   handleQuitClick = (e) => {
@@ -99,14 +91,10 @@ class Menu extends React.Component {
   }
 
   setBGToStorage = (bg = 'space2.jpg') => {
-    this.extraSubMenu.removeEventListener('mouseleave', this.handleShowExtraClick, false); // prevent flashes during render update
     if (window.localStorage) {
       localStorage.setItem('gameBg', bg);
       this.setState({selectedBg: bg}, () => {
         this.props.updateBGCallback();
-        setTimeout(() => {
-          this.extraSubMenu.addEventListener('mouseleave', this.handleShowExtraClick, false);
-        }, 1000);
       });
     }
   }
@@ -124,14 +112,9 @@ class Menu extends React.Component {
   }
 
   setBGScrollActiveStatusToStorage = (status) => {
-    this.extraSubMenu.removeEventListener('mouseleave', this.handleShowExtraClick, false); // prevent flashes during render update
     if (window.localStorage) {
       localStorage.setItem('scrollBg', status);
-      this.setState({scrollBGActive: status}, () => {
-        setTimeout(() => {
-          this.extraSubMenu.addEventListener('mouseleave', this.handleShowExtraClick, false);
-        }, 1000);
-      });
+      this.setState({scrollBGActive: status});
     }
   }
 
