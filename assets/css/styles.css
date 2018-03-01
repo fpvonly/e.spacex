@@ -274,7 +274,7 @@ canvas {
   width: 5vw;
   height: 5vw;
   background: #2b0167;
-  border: 2px solid #2b0167;
+  border: 0.15vw solid #2b0167;
   color: #fff;
   overflow: hidden;
   border-radius: 50%;
@@ -433,7 +433,7 @@ canvas {
 .extra_sub_menu .extra_bg_options .bg_selection_title {
   padding-bottom: 0.5vw;
   display: inline-block;
-  border-bottom: 2px solid #9764b4;
+  border-bottom: 0.15vw solid #9764b4;
   margin-bottom: 0.8vw;
   color: #9764b4;
   font-size: 1.5vw;
@@ -476,7 +476,7 @@ canvas {
 .extra_sub_menu .extra_performance_options .performance_selection_title {
   padding-bottom: 0.5vw;
   display: inline-block;
-  border-bottom: 2px solid #9764b4;
+  border-bottom: 0.15vw solid #9764b4;
   margin-bottom: 0.8vw;
   color: #9764b4;
   font-size: 1.5vw;
@@ -514,10 +514,10 @@ canvas {
   flex: 2;
 }
 
-.extra_sub_menu .extra_info .info_selection_title {
+.extra_sub_menu .extra_info .info_title {
   padding-bottom: 0.5vw;
   display: inline-block;
-  border-bottom: 2px solid #9764b4;
+  border-bottom: 0.15vw solid #9764b4;
   margin-bottom: 0.8vw;
   color: #9764b4;
   font-size: 1.5vw;

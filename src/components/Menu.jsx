@@ -39,7 +39,7 @@ class Menu extends React.Component {
   handleNewGameClick = (e) => {
     this.setState({extraSubMenuVisible: false}, () => {
       this.props.setGameState(C.RUN, 'MENU_NEW_GAME_CLICK');
-    });    
+    });
   }
 
   handleShowExtraClick = () => {
@@ -160,7 +160,7 @@ class Menu extends React.Component {
 
   getInfo = () => {
     return <div className='extra_info'>
-      <span className='info_selection_title'>Info:</span>
+      <span className='info_title'>Info:</span>
       <div>
         <p>
           e.spaceX is a 2D space shooter. It uses React framework as a base for the app and HTML5 Canvas API for the game itself.
