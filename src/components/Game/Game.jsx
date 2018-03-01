@@ -165,6 +165,7 @@ class Game extends React.Component {
     this.lastFpsUpdate = 0; // reset
     this.fps = this.framesThisSecond; // reset
     this.GAME_OVER = false;
+    this.points = 0;
     this.scrollY = 0;
     this.scrollX = 0;
     this.scrollSpeed = 1;
