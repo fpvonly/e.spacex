@@ -1,12 +1,37 @@
-Under Creative Commons Attribution 4.0 International License.
+'explosions'-folder graphics extracted from old and free game sprites:
+http://www.lostgarden.com/2005/03/game-post-mortem-hard-vacuum.html
+
+-----------------------------------------------------------------------
+
+Under Creative Commons Attribution 4.0 International License:
 From: http://millionthvector.blogspot.fi/p/free-sprites.html
 
-- ship_1 - Copy.png
+- ship_1_original.png
 - enemy.png
 - enemy_2.png
 - enemy_3.png
 
-Under Creative Commons Attribution-ShareAlike 3.0 Unported License.
+-----------------------------------------------------------------------
+
+Under Creative Commons Attribution-ShareAlike 3.0 Unported License:
 From: (phaelax) https://opengameart.org/content/asteroids
 
 - a10003.png
+
+-----------------------------------------------------------------------
+
+https://wallpaperscraft.com/wallpaper/galaxy_nebula_blurring_stars_65152
+
+- space2.jpg
+
+-----------------------------------------------------------------------
+
+https://www.thewallpapers.org/desktop/23267/-space-gradient-wallpaper
+
+- space1.jpg
+
+-----------------------------------------------------------------------
+
+http://www.pngmart.com/image/26798
+
+- game_scroll_stars.png
