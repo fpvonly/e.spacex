@@ -2,7 +2,7 @@ import React from 'react';
 import {render} from 'react-dom';
 import PropTypes from 'prop-types';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import Toggle from 'react-toggle'
+import Toggle from 'react-toggle';
 
 import conf from '../conf.json';
 import * as C from './Game/Constants';
@@ -152,7 +152,7 @@ class Menu extends React.Component {
       <div className='toggle_wrapper' title='Disable/enable scrolling background if performance is slow'>
         <Toggle
           checked={this.state.scrollBGActive}
-          onChange={this.handleScrollBGToggleClick}/>
+          onChange={this.handleScrollBGToggleClick} />
         <span className='bg_scroll_toggle_label'>{(this.state.scrollBGActive ? 'Background scroll ON' : 'Background scroll OFF')}</span>
       </div>
     </div>;

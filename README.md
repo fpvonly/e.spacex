@@ -2,7 +2,7 @@
 
 [ ![Codeship Status for fpvonly/e.spacex](https://app.codeship.com/projects/3b0ffc80-fc78-0135-ed44-4220c81d5566/status?branch=master)](https://app.codeship.com/projects/279059)
 
-e.spaceX is a 2D space shooter that was coded from scratch using React framework as a base for the app and HTML5 Canvas API for the game itself.
+e.spaceX is a 2D space shooter that was coded from scratch using React framework as the base for the app and HTML5 Canvas API for the game itself.
 The code was bundled with Webpack for the use of npm-modules and ES.Next-features.
 
 The game is designed for FullHD-resolution and _desktop_ browsers but it is still responsive for adjusting the game area size. The game has touch events enabled for experimental purposes
@@ -25,5 +25,4 @@ Controls:
 - steer: by holding down finger on player's ship and moving it left or right
 - shoot: automatic shooting when enemy is on target
 
-####MIT License
 Copyright (c) 2018 Ari Petäjäjärvi

@@ -62,7 +62,9 @@ class UI extends React.Component {
 
   componentDidUpdate() {
     if(this.state.isHydrating === false && this.state.musicState === true) {
-      Sounds.playMusic();
+      Sounds.playMusic().catch((err) => {
+        this.controlMusic(false);
+      });
     }
   }
 
@@ -70,8 +72,11 @@ class UI extends React.Component {
     this.setState({GAME_STATE: state});
   }
 
-  controlMusic = () => {
-    if (this.state.musicState === true) {
+  controlMusic = (value) => {
+    if (typeof value !== 'undefined' && value === false) {
+      Sounds.pauseMusic();
+      this.setmusicStateToStorage(false);
+    } else if (this.state.musicState === true) {
       Sounds.pauseMusic();
       this.setmusicStateToStorage(false);
     } else {

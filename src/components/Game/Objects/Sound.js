@@ -83,7 +83,7 @@ class Sound {
   }
 
   static playMusic = () => {
-    Sound.music.play();
+    return Sound.music.play();
   }
 
   static pauseMusic = () => {
