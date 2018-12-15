@@ -64,7 +64,7 @@ class Sound {
         break;
       }
     }
-    if (playSound !== null) {
+    if (playSound !== null && playSound.play) {
       playSound.play();
     }
   }
@@ -77,7 +77,7 @@ class Sound {
         break;
       }
     }
-    if (playSound !== null) {
+    if (playSound !== null && playSound.play) {
       playSound.play();
     }
   }
@@ -87,7 +87,9 @@ class Sound {
   }
 
   static pauseMusic = () => {
-    Sound.music.pause();
+    if (Sound.music !== null && Sound.music.pause) {
+      Sound.music.pause();
+    }
   }
 
 }
