@@ -79,7 +79,7 @@ class Menu extends React.Component {
     }
     setTimeout(() => {
       window.dispatchEvent(new Event('resize'));
-    }, 1000);
+    }, 100);
   }
 
   isFullScreenActive = () => {
