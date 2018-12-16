@@ -34,9 +34,12 @@ class Game extends React.Component {
     this.points = 0;
 
     this.fps = 0;
-    this.previousFrameTime = 0;
     this.framesThisSecond = 0;
     this.lastFpsUpdate = 0;
+    this.fpsInterval = 1000/60;
+    this.now = 0;
+    this.then = Date.now();
+    this.elapsed = 0;
 
     this.touchControls = false;
     if ("ontouchstart" in document.documentElement) {
@@ -130,12 +133,12 @@ class Game extends React.Component {
   }
 
   adjustGameSpeedBasedOnCanvasHeight = () => {
-    if (this.canvas.height < 1000) {
-      window.CANVAS_HEIGHT_ADJUST = this.canvas.height/1000;
+    if (this.canvas.height < 1080) {
+      window.CANVAS_HEIGHT_ADJUST = this.canvas.height/1080;
     } else if (this.canvas.height > 1080) {
       window.CANVAS_HEIGHT_ADJUST = this.canvas.height/1080;
     } else {
-      window.CANVAS_HEIGHT_ADJUST = 1; // for heights 1000px -> 1080px
+      window.CANVAS_HEIGHT_ADJUST = 1; // for height: 1080px (fullscreen)
     }
   }
 
@@ -163,7 +166,10 @@ class Game extends React.Component {
     window.GAME_FPS_ADJUST = 1;
     this.fps = 0; // reset previous value as it might be wrong after window resize
     this.lastFpsUpdate = 0; // reset
-    this.fps = this.framesThisSecond; // reset
+    this.framesThisSecond = 0;
+    this.now = 0;
+    this.then = Date.now();
+    this.elapsed = 0;
     this.GAME_OVER = false;
     this.points = 0;
     this.scrollY = 0;
@@ -207,17 +213,24 @@ class Game extends React.Component {
   }
 
   animate = (time) => {
-    if (time > this.lastFpsUpdate + 1000) { // update fps every second
-      this.fps = this.framesThisSecond;
-      this.lastFpsUpdate = time;
-      if (this.fps > 15 && this.framesThisSecond > 0) { // check for both variable to prevent "speed ups" after window resize
-        window.GAME_FPS_ADJUST = 60/(this.fps > 60 ? 60 : this.fps);
-      }
-      this.framesThisSecond = 0;
-    }
-    this.framesThisSecond++;
     this.animation = requestAnimFrame(this.animate);
-    this.drawFrame();
+
+    this.now = Date.now();
+    this.elapsed = this.now - this.then;
+    if (this.elapsed >= this.fpsInterval) { // limit fps to 60 frames per second
+      if (time >= this.lastFpsUpdate + 1000) { // update fps every second
+        this.fps = this.framesThisSecond;
+        this.lastFpsUpdate = time;
+        if (this.fps > 15 && this.framesThisSecond > 0) { // check for both variable to prevent "speed ups" after window resize
+          window.GAME_FPS_ADJUST = 60/(this.fps >= 60 ? 60 : this.fps);
+        }
+        this.framesThisSecond = 0;
+      }
+      this.framesThisSecond++;
+      this.then = this.now - (this.elapsed % this.fpsInterval);
+
+      this.drawFrame();
+    }
 
     if (DEBUG === true) {
       this.debugFPSREF.updateFPS(this.fps);

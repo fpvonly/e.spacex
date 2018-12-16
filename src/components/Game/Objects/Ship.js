@@ -9,7 +9,7 @@ class Ship extends GameObject {
   constructor(context, canvas) {
 
     let ratio = 125/306; // width/height ratio for image
-    let height = 150 * window.CANVAS_HEIGHT_ADJUST; // 150px is for 1000px -> 1080px window height
+    let height = 150 * window.CANVAS_HEIGHT_ADJUST; // 150px is for 1080px window height
     let width = height * ratio;
 
     // context, canvas, width, height
